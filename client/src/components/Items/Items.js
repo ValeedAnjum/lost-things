@@ -10,10 +10,10 @@ const Items = () => {
   return (
     <Fragment>
       <Paper>
-        <Tabs value={1} indicatorColor="primary" textColor="primary" centered>
-          <Tab label="Near By" />
-          <Tab label="result" />
-          <Tab label="Videos" />
+        <Tabs indicatorColor="primary" textColor="primary" centered>
+          <Tab label="Lost Items" />
+          {/* <Tab label="result" /> */}
+          {/* <Tab label="Videos" /> */}
         </Tabs>
       </Paper>
       <Grid container justify="center" style={{ marginTop: "10px" }}>

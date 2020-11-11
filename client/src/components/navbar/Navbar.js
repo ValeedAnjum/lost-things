@@ -7,6 +7,7 @@ import {
   Button,
   Drawer,
 } from "@material-ui/core";
+import Register from "./Register/Register";
 const useStyles = makeStyles(() => ({
   appbar: {
     backgroundColor: "transparent",
@@ -31,7 +32,7 @@ const Navbar = () => {
       <AppBar position="absolute" color="primary" className={classes.appbar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Lost Things
+            Lost Things Finder
           </Typography>
           <Button color="inherit" onClick={() => setopenDrawerRegister(true)}>
             Register
@@ -47,7 +48,7 @@ const Navbar = () => {
         variant="temporary"
         anchor="top"
         open={openDrawerLogin}
-        onClose={() => setopenDrawerLogin(false)}
+        // onClose={() => setopenDrawerLogin(false)}
       >
         <div
           style={{ height: "100vh" }}
@@ -60,13 +61,15 @@ const Navbar = () => {
         variant="temporary"
         anchor="top"
         open={openDrawerRegister}
-        onClose={() => setopenDrawerRegister(false)}
+        // onClose={() => setopenDrawerRegister(false)}
       >
         <div
           style={{ height: "100vh" }}
-          onClick={() => setopenDrawerRegister(false)}
+          // onClick={() => setopenDrawerRegister(false)}
         >
-          Register
+          <Register
+            setopenDrawerRegister={() => setopenDrawerRegister(false)}
+          />
         </div>
       </Drawer>
     </Fragment>
