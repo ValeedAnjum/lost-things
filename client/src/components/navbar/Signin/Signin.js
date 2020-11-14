@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => {
     },
   };
 });
-const Register = ({ setopenDrawerRegister }) => {
+const Signin = ({ openDrawerLogin }) => {
   const classes = useStyles();
   return (
     <Container maxWidth="xl" component="main">
       <CssBaseline />
-      <Avatar className={classes.crossIcon} onClick={setopenDrawerRegister}>
+      <Avatar className={classes.crossIcon} onClick={openDrawerLogin}>
         X
       </Avatar>
       <Grid container justify="center">
@@ -56,20 +56,9 @@ const Register = ({ setopenDrawerRegister }) => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Registration
+              Sign In
             </Typography>
             <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Name"
-                name="name"
-                autoComplete="name"
-                autoFocus
-              />
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -79,6 +68,7 @@ const Register = ({ setopenDrawerRegister }) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                autoFocus
               />
               <TextField
                 variant="outlined"
@@ -102,7 +92,7 @@ const Register = ({ setopenDrawerRegister }) => {
                 color="primary"
                 className={classes.submit}
               >
-                Registration
+                Sign In
               </Button>
             </form>
           </div>
@@ -112,4 +102,4 @@ const Register = ({ setopenDrawerRegister }) => {
   );
 };
 
-export default Register;
+export default Signin;

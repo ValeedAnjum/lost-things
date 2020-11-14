@@ -6,8 +6,10 @@ import {
   makeStyles,
   Button,
   Drawer,
+  Avatar,
 } from "@material-ui/core";
 import Register from "./Register/Register";
+import Signin from "./Signin/Signin";
 const useStyles = makeStyles(() => ({
   appbar: {
     backgroundColor: "transparent",
@@ -31,9 +33,13 @@ const Navbar = () => {
     <Fragment>
       <AppBar position="absolute" color="primary" className={classes.appbar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          {/* <Typography variant="h6" className={classes.title}>
             Lost Things Finder
-          </Typography>
+          </Typography> */}
+          <div className={classes.title}>
+            {/* <Avatar alt="Lost Things Finder" src="./logo.png" /> */}
+            <img src="./logo.png" style={{ width: "150px", height: "150px" }} />
+          </div>
           <Button color="inherit" onClick={() => setopenDrawerRegister(true)}>
             Register
           </Button>
@@ -44,29 +50,13 @@ const Navbar = () => {
       </AppBar>
       <div className={classes.searchArea}></div>
 
-      <Drawer
-        variant="temporary"
-        anchor="top"
-        open={openDrawerLogin}
-        // onClose={() => setopenDrawerLogin(false)}
-      >
-        <div
-          style={{ height: "100vh" }}
-          onClick={() => setopenDrawerLogin(false)}
-        >
-          Login
+      <Drawer variant="temporary" anchor="top" open={openDrawerLogin}>
+        <div style={{ height: "100vh" }}>
+          <Signin openDrawerLogin={() => setopenDrawerLogin(false)} />
         </div>
       </Drawer>
-      <Drawer
-        variant="temporary"
-        anchor="top"
-        open={openDrawerRegister}
-        // onClose={() => setopenDrawerRegister(false)}
-      >
-        <div
-          style={{ height: "100vh" }}
-          // onClick={() => setopenDrawerRegister(false)}
-        >
+      <Drawer variant="temporary" anchor="top" open={openDrawerRegister}>
+        <div style={{ height: "100vh" }}>
           <Register
             setopenDrawerRegister={() => setopenDrawerRegister(false)}
           />
