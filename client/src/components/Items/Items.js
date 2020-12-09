@@ -10,18 +10,29 @@ const Items = () => {
   return (
     <Fragment>
       <Paper>
-        <Tabs indicatorColor="primary" textColor="primary" centered>
+        {/* <Tabs indicatorColor="primary" textColor="primary" centered>
           <Tab label="Lost Items" />
-          {/* <Tab label="result" /> */}
-          {/* <Tab label="Videos" /> */}
-        </Tabs>
+          <Tab label="result" />
+          <Tab label="Videos" />
+        </Tabs> */}
       </Paper>
       <Grid container justify="center" style={{ marginTop: "10px" }}>
         <Grid item container style={{ width: "95%" }} spacing={2}>
           {[0, 1, 2, 0, 1, 2].map((num) => {
             return (
               <Grid key={num} item xs={12} sm={4}>
-                <img width="100%" src={pictures[num]} alt={num} />
+                <div
+                  style={{
+                    width: "100%",
+                    height: "300px",
+                    cursor: "pointer",
+                    backgroundImage: `url(${pictures[num]})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                  }}
+                >
+                  {/* <img width="100%" src={pictures[num]} alt={num} /> */}
+                </div>
               </Grid>
             );
           })}
