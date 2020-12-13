@@ -1,27 +1,26 @@
 import React, { Fragment } from "react";
-import { Tabs, Tab, Paper, Grid } from "@material-ui/core";
+import { NavLink, withRouter } from "react-router-dom";
+import { Grid } from "@material-ui/core";
 
 const pictures = [
   "https://images.pexels.com/photos/5425971/pexels-photo-5425971.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
   "https://images.pexels.com/photos/5560026/pexels-photo-5560026.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
   "https://images.pexels.com/photos/876466/pexels-photo-876466.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/876466/pexels-photo-876466.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/876466/pexels-photo-876466.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/876466/pexels-photo-876466.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
 ];
-const Items = () => {
+const Items = (props) => {
+  const { history } = props;
   return (
     <Fragment>
-      <Paper>
-        {/* <Tabs indicatorColor="primary" textColor="primary" centered>
-          <Tab label="Lost Items" />
-          <Tab label="result" />
-          <Tab label="Videos" />
-        </Tabs> */}
-      </Paper>
       <Grid container justify="center" style={{ marginTop: "10px" }}>
         <Grid item container style={{ width: "95%" }} spacing={2}>
-          {[0, 1, 2, 0, 1, 2].map((num) => {
+          {[0, 1, 2, 3, 4, 5].map((num) => {
             return (
               <Grid key={num} item xs={12} sm={4}>
                 <div
+                  onClick={() => history.push(`/details/${num}`)}
                   style={{
                     width: "100%",
                     height: "300px",
@@ -30,9 +29,7 @@ const Items = () => {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                   }}
-                >
-                  {/* <img width="100%" src={pictures[num]} alt={num} /> */}
-                </div>
+                ></div>
               </Grid>
             );
           })}
@@ -42,4 +39,4 @@ const Items = () => {
   );
 };
 
-export default Items;
+export default withRouter(Items);
