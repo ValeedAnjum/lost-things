@@ -12,8 +12,15 @@ const useStyles = makeStyles(() => ({
   searchArea: {
     height: "80vh",
     backgroundSize: "cover",
+    position: "relative",
     backgroundImage:
       "url(https://images.pexels.com/photos/705164/computer-laptop-work-place-camera-705164.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)",
+  },
+  searchBarContainer: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%,-50%)",
   },
 }));
 
@@ -40,7 +47,11 @@ const Navbar = () => {
           </Button>
         </Toolbar>
       </AppBar>
-      <div className={classes.searchArea}></div>
+      <div className={classes.searchArea}>
+        <div className={classes.searchBarContainer}>
+          <h1>Khan Babaaaa</h1>
+        </div>
+      </div>
 
       <Drawer variant="temporary" anchor="top" open={openDrawerLogin}>
         <div style={{ height: "100vh" }}>
