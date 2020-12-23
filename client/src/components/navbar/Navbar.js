@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { AppBar, Toolbar, makeStyles, Button, Drawer } from "@material-ui/core";
 import Register from "./Register/Register";
 import Signin from "./Signin/Signin";
+import Searchbar from "./Searchbar/Searchbar";
 const useStyles = makeStyles(() => ({
   appbar: {
     backgroundColor: "transparent",
@@ -21,6 +22,7 @@ const useStyles = makeStyles(() => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
+    width: "50%",
   },
 }));
 
@@ -49,7 +51,7 @@ const Navbar = () => {
       </AppBar>
       <div className={classes.searchArea}>
         <div className={classes.searchBarContainer}>
-          <h1>Khan Babaaaa</h1>
+          <Searchbar />
         </div>
       </div>
 
