@@ -3,25 +3,14 @@ import { Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 
 const Searchbar = () => {
+  const A_F = () => {
+    console.log("autocomplete");
+  };
   return (
     <Fragment>
-      {/* <div style={{ display: "flex" }}>
-        <input
-          type="text"
-          placeholder="Search..."
-          style={{
-            outline: "none",
-            border: "none",
-            padding: "5px",
-            height: "30px",
-            width: "88%",
-          }}
-        />
-        <button style={{ border: "none", width: "12%" }}>Find</button>
-      </div> */}
       <Grid container direction="column">
         <Grid item xs={12}>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex" }} onClick={A_F}>
             <input
               type="text"
               placeholder="Search..."
