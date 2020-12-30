@@ -12,6 +12,17 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router-dom";
+import { combineValidators, isRequired } from "revalidate";
+import { reduxForm, Field } from "redux-form";
+import TextInput from "../../Form/TextInput";
+
+const validate = combineValidators({
+  name: isRequired({ message: "Name is required" }),
+  email: isRequired({ message: "Email is required" }),
+  password: isRequired({ message: "Password is also required" }),
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -36,13 +47,20 @@ const useStyles = makeStyles((theme) => {
       position: "absolute",
       right: "15px",
       top: "10px",
-      //   backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.secondary.main,
       cursor: "pointer",
     },
   };
 });
-const Register = ({ setopenDrawerRegister }) => {
+const Register = (props) => {
+  const { setopenDrawerRegister, handleSubmit } = props;
   const classes = useStyles();
+  const register = (event) => {
+    event.preventDefault();
+  };
+  const submitVal = (val) => {
+    console.log(val);
+  };
   return (
     <Container maxWidth="xl" component="main">
       <CssBaseline />
@@ -58,8 +76,15 @@ const Register = ({ setopenDrawerRegister }) => {
             <Typography component="h1" variant="h5">
               Registration
             </Typography>
-            <form className={classes.form} noValidate>
-              <TextField
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={handleSubmit(submitVal)}
+            >
+              <Field
+                component={TextInput}
+                type="name"
+                placeholder="Name"
                 variant="outlined"
                 margin="normal"
                 required
@@ -70,6 +95,7 @@ const Register = ({ setopenDrawerRegister }) => {
                 autoComplete="name"
                 autoFocus
               />
+
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -112,4 +138,11 @@ const Register = ({ setopenDrawerRegister }) => {
   );
 };
 
-export default Register;
+const mapState = (state) => {
+  console.log(state);
+  return {};
+};
+
+export default connect(mapState)(
+  reduxForm({ form: "RegisterForm", validate })(withRouter(Register))
+);

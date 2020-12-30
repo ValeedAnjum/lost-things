@@ -41,6 +41,7 @@ const Navbar = () => {
               style={{ width: "150px", height: "150px" }}
             />
           </div>
+          <Button color="inherit">Post Lost Item</Button>
           <Button color="inherit" onClick={() => setopenDrawerRegister(true)}>
             Register
           </Button>

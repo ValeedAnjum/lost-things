@@ -9,13 +9,13 @@ import SearchResult from "./SearchResult";
 
 const Searchbar = () => {
   const [address, setAddress] = useState("");
-  const [coordinates, setCoordinates] = useState({ Lat: 0, Lng: 0 });
+  // const [coordinates, setCoordinates] = useState({ Lat: 0, Lng: 0 });
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLan = await getLatLng(results[0]);
     console.log(latLan);
     setAddress(value);
-    setCoordinates(latLan);
+    // setCoordinates(latLan);
   };
   return (
     <Fragment>

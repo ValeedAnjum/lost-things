@@ -15,20 +15,22 @@ export const loadUser = () => async (dispatch) => {
 };
 
 export const signIn = ({ email, password }) => async (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
+  console.log(email);
+  console.log(password);
+  // const config = {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // };
 
-  const body = JSON.stringify({ email, password });
-  try {
-    const res = await axios.post(`/auth/signin`, body, config);
-    dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
-    dispatch(loadUser());
-  } catch (err) {
-    console.log(err.response.data.errors);
-  }
+  // const body = JSON.stringify({ email, password });
+  // try {
+  //   const res = await axios.post(`/auth/signin`, body, config);
+  //   dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
+  //   dispatch(loadUser());
+  // } catch (err) {
+  //   console.log(err.response.data.errors);
+  // }
 };
 
 export const register = ({ name, email, password }) => async (dispatch) => {

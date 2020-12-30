@@ -1,5 +1,4 @@
 import React from "react";
-import { Fragment } from "react";
 
 const SearchResult = ({ sug, style, getSuggestionItemProps }) => {
   return (
