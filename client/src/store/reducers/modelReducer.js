@@ -4,7 +4,6 @@ const iniState = {
 
 export const modelReducer = (state = iniState, action) => {
   const { type } = action;
-  console.log(type);
   switch (type) {
     case "SingInModelOpen":
       return { ...state, modelName: "SingInModel" };

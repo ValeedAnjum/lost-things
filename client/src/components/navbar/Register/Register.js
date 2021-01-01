@@ -17,11 +17,12 @@ import { Redirect, withRouter } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
 import TextInput from "../../Form/TextInput";
+import { register } from "../../../store/actions/authActions";
 
 const validate = combineValidators({
-  name: isRequired({ message: "Name is required" }),
-  email: isRequired({ message: "Email is required" }),
-  password: isRequired({ message: "Password is also required" }),
+  name: isRequired({ message: "Please Enter Your Name..." }),
+  email: isRequired({ message: "Please Enter Your Email..." }),
+  password: isRequired({ message: "Please Enter Your Password..." }),
 });
 
 const useStyles = makeStyles((theme) => {
@@ -53,13 +54,13 @@ const useStyles = makeStyles((theme) => {
   };
 });
 const Register = (props) => {
-  const { setopenDrawerRegister, handleSubmit } = props;
+  const { setopenDrawerRegister, handleSubmit, register_user } = props;
   const classes = useStyles();
   const register = (event) => {
     event.preventDefault();
   };
   const submitVal = (val) => {
-    console.log(val);
+    register_user(val);
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -96,27 +97,31 @@ const Register = (props) => {
                 autoFocus
               />
 
-              <TextField
+              <Field
+                component={TextInput}
+                type="name"
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                placeholder="Email Address"
                 name="email"
                 autoComplete="email"
               />
-              <TextField
+
+              <Field
+                component={TextInput}
+                type="password"
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
                 id="password"
-                autoComplete="current-password"
+                placeholder="Password"
+                name="password"
               />
+
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -143,6 +148,13 @@ const mapState = (state) => {
   return {};
 };
 
-export default connect(mapState)(
-  reduxForm({ form: "RegisterForm", validate })(withRouter(Register))
-);
+const mapDispatch = (dispatch) => {
+  return {
+    register_user: (cred) => dispatch(register(cred)),
+  };
+};
+
+export default connect(
+  mapState,
+  mapDispatch
+)(reduxForm({ form: "RegisterForm", validate })(withRouter(Register)));

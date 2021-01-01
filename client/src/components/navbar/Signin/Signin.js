@@ -5,13 +5,23 @@ import {
   Container,
   makeStyles,
   Typography,
-  TextField,
   Checkbox,
   Button,
   Grid,
 } from "@material-ui/core";
 import React from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router-dom";
+import { combineValidators, isRequired } from "revalidate";
+import { reduxForm, Field } from "redux-form";
+import TextInput from "../../Form/TextInput";
+import { signIn } from "../../../store/actions/authActions";
+
+const validate = combineValidators({
+  email: isRequired({ message: "Please Enter Your Email..." }),
+  password: isRequired({ message: "Please Enter Your Password..." }),
+});
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -36,13 +46,17 @@ const useStyles = makeStyles((theme) => {
       position: "absolute",
       right: "15px",
       top: "10px",
-      //   backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.secondary.main,
       cursor: "pointer",
     },
   };
 });
-const Signin = ({ openDrawerLogin }) => {
+const Signin = (props) => {
+  const { openDrawerLogin, handleSubmit, signin_user } = props;
   const classes = useStyles();
+  const submitVal = (val) => {
+    signin_user(val);
+  };
   return (
     <Container maxWidth="xl" component="main">
       <CssBaseline />
@@ -56,31 +70,38 @@ const Signin = ({ openDrawerLogin }) => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign In
+              Registration
             </Typography>
-            <form className={classes.form} noValidate>
-              <TextField
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={handleSubmit(submitVal)}
+            >
+              <Field
+                component={TextInput}
+                type="email"
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                placeholder="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
               />
-              <TextField
+
+              <Field
+                component={TextInput}
+                type="password"
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
                 id="password"
-                autoComplete="current-password"
+                placeholder="Password"
+                name="password"
               />
+
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -92,7 +113,7 @@ const Signin = ({ openDrawerLogin }) => {
                 color="primary"
                 className={classes.submit}
               >
-                Sign In
+                Login
               </Button>
             </form>
           </div>
@@ -102,4 +123,18 @@ const Signin = ({ openDrawerLogin }) => {
   );
 };
 
-export default Signin;
+const mapState = (state) => {
+  console.log(state);
+  return {};
+};
+
+const mapDispatch = (dispatch) => {
+  return {
+    signin_user: (cred) => dispatch(signIn(cred)),
+  };
+};
+
+export default connect(
+  mapState,
+  mapDispatch
+)(reduxForm({ form: "SigninForm", validate })(withRouter(Signin)));
