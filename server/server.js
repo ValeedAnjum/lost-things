@@ -9,8 +9,9 @@ app.use(express.json({ extended: false }));
 //checking
 app.get("/", (req, res) => res.send("API IS UP"));
 
-// defining routes
-// app.use()
+//defining routes
+app.use("/auth", require("./routes/auth"));
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
