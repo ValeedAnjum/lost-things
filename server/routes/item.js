@@ -15,4 +15,19 @@ router.post("/save-item", auth, async (req, res) => {
   }
 });
 
+router.get("/getitem/:lat/:lon", async (req, res) => {
+  const { lat, lon } = req.params;
+  try {
+    const items = await Item.find({
+      lat: { $gte: 1, $lte: 5 },
+      lon: { $gte: 11, $lte: 13 },
+    });
+    // console.log(items);
+    return res.json(items);
+  } catch (error) {
+    return res.status(500).send("Srever error");
+  }
+  return res.send("getItemLatLon");
+});
+
 module.exports = router;
