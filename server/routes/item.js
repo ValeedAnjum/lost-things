@@ -27,7 +27,6 @@ router.get("/getitem/:lat/:lon", async (req, res) => {
   } catch (error) {
     return res.status(500).send("Srever error");
   }
-  return res.send("getItemLatLon");
 });
 
 module.exports = router;
