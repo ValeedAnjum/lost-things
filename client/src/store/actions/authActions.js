@@ -17,35 +17,35 @@ export const loadUser = () => async (dispatch) => {
 export const signIn = ({ email, password }) => async (dispatch) => {
   console.log(email);
   console.log(password);
-  // const config = {
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // };
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-  // const body = JSON.stringify({ email, password });
-  // try {
-  //   const res = await axios.post(`/auth/signin`, body, config);
-  //   dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
-  //   dispatch(loadUser());
-  // } catch (err) {
-  //   console.log(err.response.data.errors);
-  // }
+  const body = JSON.stringify({ email, password });
+  try {
+    const res = await axios.post(`/auth/signin`, body, config);
+    dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
+    dispatch(loadUser());
+  } catch (err) {
+    console.log(err.response.data.errors);
+  }
 };
 
 export const register = ({ name, email, password }) => async (dispatch) => {
   console.log(name, email, password);
-  // const config = {
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // };
-  // const body = JSON.stringify({ name, email, password });
-  // try {
-  //   const res = await axios.post("/auth/register", body, config);
-  //   dispatch({ type: "REGISTER_SUCCESS", payload: res.data.token });
-  //   dispatch(loadUser());
-  // } catch (error) {
-  //   console.log(error.response.data.errors);
-  // }
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ name, email, password });
+  try {
+    const res = await axios.post("/auth/register", body, config);
+    dispatch({ type: "REGISTER_SUCCESS", payload: res.data.token });
+    dispatch(loadUser());
+  } catch (error) {
+    console.log(error.response.data.errors);
+  }
 };

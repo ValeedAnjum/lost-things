@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { AppBar, Toolbar, makeStyles, Button, Drawer } from "@material-ui/core";
+import { connect } from "react-redux";
 import Register from "./Register/Register";
 import Signin from "./Signin/Signin";
 import Searchbar from "./Searchbar/Searchbar";
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ auth, logout }) => {
   const [openDrawerLogin, setopenDrawerLogin] = useState(false);
   const [openDrawerRegister, setopenDrawerRegister] = useState(false);
   const classes = useStyles();
@@ -42,12 +43,25 @@ const Navbar = () => {
             />
           </div>
           <Button color="inherit">Post Lost Item</Button>
-          <Button color="inherit" onClick={() => setopenDrawerRegister(true)}>
-            Register
-          </Button>
-          <Button color="inherit" onClick={() => setopenDrawerLogin(true)}>
-            Login
-          </Button>
+          {!auth ? (
+            <Fragment>
+              <Button
+                color="inherit"
+                onClick={() => setopenDrawerRegister(true)}
+              >
+                Register
+              </Button>
+              <Button color="inherit" onClick={() => setopenDrawerLogin(true)}>
+                Login
+              </Button>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Button color="inherit" onClick={logout}>
+                Logout
+              </Button>
+            </Fragment>
+          )}
         </Toolbar>
       </AppBar>
       <div className={classes.searchArea}>
@@ -72,4 +86,15 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapState = (state) => {
+  return {
+    auth: state.auth.auth,
+  };
+};
+const mapDispatch = (dispatch) => {
+  return {
+    logout: () => dispatch({ type: "CLEAR_PROFILE" }),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Navbar);

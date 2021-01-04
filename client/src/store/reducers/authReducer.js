@@ -14,6 +14,7 @@ export const authReducer = (state = initState, action) => {
     case "SET_PROFILE":
       return { ...state, profile: payload };
     case "CLEAR_PROFILE":
+      console.log("CLEAR_PROFILE");
       localStorage.removeItem("token");
       return { ...state, auth: false, token: null, profile: null };
     default:
