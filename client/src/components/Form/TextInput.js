@@ -1,6 +1,14 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core";
 
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      borderRadius: 0,
+    },
+  };
+});
 const Textinput = (props) => {
   const {
     input,
@@ -8,6 +16,7 @@ const Textinput = (props) => {
     placeholder,
     meta: { touched, error },
   } = props;
+  const classes = useStyles();
   return (
     <React.Fragment>
       {/* <input
@@ -26,6 +35,7 @@ const Textinput = (props) => {
         label={touched && error ? error : placeholder}
         variant="outlined"
         required
+        InputProps={{ classes }}
       />
     </React.Fragment>
   );

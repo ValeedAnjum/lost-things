@@ -90,18 +90,27 @@ const UploadItems = (props) => {
                 autoFocus
               />
 
-              <Field
-                component={TextInput}
-                type="name"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                placeholder="Item Location"
-                name="location"
-                autoComplete="email"
-              />
+              <Grid container>
+                <Grid item sm={10}>
+                  <Field
+                    component={TextInput}
+                    type="name"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="location"
+                    placeholder="Item Location"
+                    name="location"
+                    autoComplete="location"
+                  />
+                </Grid>
+                <Grid sm={2}>
+                  <Button fullWidth variant="contained" color="primary">
+                    Current Location
+                  </Button>
+                </Grid>
+              </Grid>
 
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
