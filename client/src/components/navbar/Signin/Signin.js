@@ -12,7 +12,7 @@ import {
 import React from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
 import TextInput from "../../Form/TextInput";

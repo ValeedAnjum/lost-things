@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
+import Wallet from "../../Assets/Images/wallet.jpg";
 const Details = (props) => {
   console.log(props.match.params.id);
   return (
@@ -10,7 +11,7 @@ const Details = (props) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <img
-            src="/sources/images/wallet.jpg"
+            src={Wallet}
             alt="LPF"
             style={{
               width: "100%",

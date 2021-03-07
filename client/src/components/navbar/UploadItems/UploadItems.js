@@ -16,12 +16,12 @@ import { withRouter } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
 import TextInput from "../../Form/TextInput";
-import { register } from "../../../store/actions/authActions";
+import { uploadItem } from "../../../store/actions/userActions";
 
 const validate = combineValidators({
-  name: isRequired({ message: "Please Enter Your Name..." }),
-  email: isRequired({ message: "Please Enter Your Email..." }),
-  password: isRequired({ message: "Please Enter Your Password..." }),
+  name: isRequired({ message: "Please Enter Item Description..." }),
+  location: isRequired({ message: "Please Select Item Location..." }),
+  date: isRequired({ message: "Please Enter Date..." }),
 });
 
 const useStyles = makeStyles((theme) => {
@@ -52,36 +52,33 @@ const useStyles = makeStyles((theme) => {
     },
   };
 });
-const Register = (props) => {
-  const { setopenDrawerRegister, handleSubmit, register_user } = props;
+const UploadItems = (props) => {
+  const { setopenDrawerUpload, handleSubmit, item_upload } = props;
   const classes = useStyles();
-  const submitVal = (val) => {
-    register_user(val);
+  const submitData = (val) => {
+    item_upload(val);
   };
   return (
     <Container maxWidth="xl" component="main">
       <CssBaseline />
-      <Avatar className={classes.crossIcon} onClick={setopenDrawerRegister}>
+      <Avatar className={classes.crossIcon} onClick={setopenDrawerUpload}>
         X
       </Avatar>
       <Grid container justify="center">
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={12}>
           <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
             <Typography component="h1" variant="h5">
-              Registration
+              Upload Items
             </Typography>
             <form
               className={classes.form}
               noValidate
-              onSubmit={handleSubmit(submitVal)}
+              onSubmit={handleSubmit(submitData)}
             >
               <Field
                 component={TextInput}
                 type="name"
-                placeholder="Name"
+                placeholder="Item Description"
                 variant="outlined"
                 margin="normal"
                 required
@@ -101,21 +98,9 @@ const Register = (props) => {
                 required
                 fullWidth
                 id="email"
-                placeholder="Email Address"
-                name="email"
+                placeholder="Item Location"
+                name="location"
                 autoComplete="email"
-              />
-
-              <Field
-                component={TextInput}
-                type="password"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="password"
-                placeholder="Password"
-                name="password"
               />
 
               <FormControlLabel
@@ -129,7 +114,7 @@ const Register = (props) => {
                 color="primary"
                 className={classes.submit}
               >
-                Registration
+                Upload Item
               </Button>
             </form>
           </div>
@@ -146,11 +131,11 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    register_user: (cred) => dispatch(register(cred)),
+    item_upload: (data) => dispatch(uploadItem(data)),
   };
 };
 
 export default connect(
   mapState,
   mapDispatch
-)(reduxForm({ form: "RegisterForm", validate })(withRouter(Register)));
+)(reduxForm({ form: "UploadItemForm", validate })(withRouter(UploadItems)));
