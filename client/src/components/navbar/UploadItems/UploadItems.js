@@ -8,9 +8,10 @@ import {
   Checkbox,
   Button,
   Grid,
+  IconButton,
 } from "@material-ui/core";
 import React from "react";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
@@ -22,6 +23,7 @@ const validate = combineValidators({
   name: isRequired({ message: "Please Enter Item Description..." }),
   location: isRequired({ message: "Please Select Item Location..." }),
   date: isRequired({ message: "Please Enter Date..." }),
+  detail: isRequired({ message: "Please Enter at least 1 hint..." }),
 });
 
 const useStyles = makeStyles((theme) => {
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => {
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
+      borderRadius: 0,
     },
     crossIcon: {
       position: "absolute",
@@ -90,32 +93,43 @@ const UploadItems = (props) => {
                 autoFocus
               />
 
-              <Grid container>
-                <Grid item sm={10}>
-                  <Field
-                    component={TextInput}
-                    type="name"
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="location"
-                    placeholder="Item Location"
-                    name="location"
-                    autoComplete="location"
-                  />
-                </Grid>
-                <Grid sm={2}>
-                  <Button fullWidth variant="contained" color="primary">
-                    Current Location
-                  </Button>
-                </Grid>
-              </Grid>
-
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+              <Field
+                component={TextInput}
+                type="name"
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="location"
+                placeholder="Item Location"
+                name="location"
+                autoComplete="location"
               />
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ display: "block", borderRadius: 0 }}
+              >
+                Current Location
+              </Button>
+              {/* details  */}
+              <Typography variant="h6">Details*</Typography>
+              <Field
+                component={TextInput}
+                type="name"
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="detail"
+                placeholder="Item Details"
+                name="detail"
+                autoComplete="detail"
+              />
+              <IconButton>
+                <AddIcon />
+              </IconButton>
+              {/* details  */}
               <Button
                 type="submit"
                 fullWidth
