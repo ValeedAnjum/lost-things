@@ -15,8 +15,14 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
+import Geocode from "react-geocode";
+
 import TextInput from "../../Form/TextInput";
 import { uploadItem } from "../../../store/actions/userActions";
+import { GOOGLE_MAP_API_KEY } from "../../../config/config";
+
+// Setting goole map api key
+Geocode.setApiKey(GOOGLE_MAP_API_KEY);
 
 const validate = combineValidators({
   name: isRequired({ message: "Please Enter Item Description..." }),
@@ -81,6 +87,15 @@ const UploadItems = (props) => {
       console.log(pos.coords.longitude);
       setcoords({ lati: pos.coords.latitude, longi: pos.coords.longitude });
       // reverse geo coding
+      Geocode.fromLatLng(pos.coords.latitude, pos.coords.longitude).then(
+        (response) => {
+          const address = response.results[0].formatted_address;
+          console.log(address);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
     });
   };
   return (
