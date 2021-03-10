@@ -1,16 +1,15 @@
 import {
   Avatar,
   CssBaseline,
-  FormControlLabel,
   Container,
   makeStyles,
   Typography,
-  Checkbox,
   Button,
   Grid,
   IconButton,
 } from "@material-ui/core";
-import React from "react";
+import TextField from "@material-ui/core/TextField";
+import React, { useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -23,11 +22,13 @@ const validate = combineValidators({
   name: isRequired({ message: "Please Enter Item Description..." }),
   location: isRequired({ message: "Please Select Item Location..." }),
   date: isRequired({ message: "Please Enter Date..." }),
-  detail: isRequired({ message: "Please Enter at least 1 hint..." }),
 });
 
 const useStyles = makeStyles((theme) => {
   return {
+    root: {
+      borderRadius: 0,
+    },
     paper: {
       marginTop: theme.spacing(8),
       display: "flex",
@@ -57,9 +58,30 @@ const useStyles = makeStyles((theme) => {
 });
 const UploadItems = (props) => {
   const { setopenDrawerUpload, handleSubmit, item_upload } = props;
+  const [details, setdetails] = useState([1]);
+  const [coords, setcoords] = useState({});
   const classes = useStyles();
   const submitData = (val) => {
-    item_upload(val);
+    const detailDescriptions = [];
+    details.forEach((id) => {
+      detailDescriptions.push(document.getElementById(id).value);
+    });
+    val.details = detailDescriptions;
+    console.log(val);
+    // item_upload(val);
+  };
+  const addDetail = () => {
+    const detailsCopy = [...details];
+    detailsCopy.push(details[details.length - 1] + 1);
+    setdetails(detailsCopy);
+  };
+  const getCurrentPosition = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      console.log(pos.coords.latitude);
+      console.log(pos.coords.longitude);
+      setcoords({ lati: pos.coords.latitude, longi: pos.coords.longitude });
+      // reverse geo coding
+    });
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -81,7 +103,7 @@ const UploadItems = (props) => {
               <Field
                 component={TextInput}
                 type="name"
-                placeholder="Item Description"
+                placeholder="Item description"
                 variant="outlined"
                 margin="normal"
                 required
@@ -101,32 +123,41 @@ const UploadItems = (props) => {
                 required
                 fullWidth
                 id="location"
-                placeholder="Item Location"
+                placeholder="search location or click on current location"
                 name="location"
                 autoComplete="location"
               />
               <Button
                 variant="contained"
                 color="primary"
-                style={{ display: "block", borderRadius: 0 }}
+                onClick={getCurrentPosition}
+                style={{ borderRadius: 0 }}
               >
                 Current Location
               </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ borderRadius: 0 }}
+              >
+                Upload Picture
+              </Button>
               {/* details  */}
               <Typography variant="h6">Details*</Typography>
-              <Field
-                component={TextInput}
-                type="name"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="detail"
-                placeholder="Item Details"
-                name="detail"
-                autoComplete="detail"
-              />
-              <IconButton>
+              {details.map((key) => {
+                return (
+                  <TextField
+                    key={key}
+                    id={key.toString()}
+                    type="text"
+                    style={{ width: "100%", marginBottom: "10px" }}
+                    variant="outlined"
+                    required
+                  />
+                );
+              })}
+
+              <IconButton onClick={addDetail}>
                 <AddIcon />
               </IconButton>
               {/* details  */}
@@ -148,7 +179,7 @@ const UploadItems = (props) => {
 };
 
 const mapState = (state) => {
-  console.log(state);
+  // console.log(state);
   return {};
 };
 
