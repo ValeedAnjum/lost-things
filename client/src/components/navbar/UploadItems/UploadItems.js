@@ -15,19 +15,18 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
-import Geocode from "react-geocode";
 
 import TextInput from "../../Form/TextInput";
 import { uploadItem } from "../../../store/actions/userActions";
-import { GOOGLE_MAP_API_KEY } from "../../../config/config";
-
-// Setting goole map api key
-Geocode.setApiKey(GOOGLE_MAP_API_KEY);
+import Searchlocation from "./Searchlocation/Searchlocation";
 
 const validate = combineValidators({
   name: isRequired({ message: "Please Enter Item Description..." }),
   location: isRequired({ message: "Please Select Item Location..." }),
   date: isRequired({ message: "Please Enter Date..." }),
+  detail: isRequired({
+    message: "Please enter at least 1 hint about the product",
+  }),
 });
 
 const useStyles = makeStyles((theme) => {
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme) => {
 });
 const UploadItems = (props) => {
   const { setopenDrawerUpload, handleSubmit, item_upload } = props;
-  const [details, setdetails] = useState([1]);
+  const [details, setdetails] = useState([]);
   const [coords, setcoords] = useState({});
   const classes = useStyles();
   const submitData = (val) => {
@@ -72,31 +71,21 @@ const UploadItems = (props) => {
     details.forEach((id) => {
       detailDescriptions.push(document.getElementById(id).value);
     });
-    val.details = detailDescriptions;
-    console.log(val);
+    val.details = [val.detail, ...detailDescriptions];
+    const CopyVal = { ...val };
+    delete CopyVal.detail;
+    console.log(CopyVal);
     // item_upload(val);
   };
   const addDetail = () => {
     const detailsCopy = [...details];
-    detailsCopy.push(details[details.length - 1] + 1);
+    details.length === 0
+      ? detailsCopy.push(1)
+      : detailsCopy.push(details[details.length - 1] + 1);
     setdetails(detailsCopy);
   };
   const getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      console.log(pos.coords.latitude);
-      console.log(pos.coords.longitude);
-      setcoords({ lati: pos.coords.latitude, longi: pos.coords.longitude });
-      // reverse geo coding
-      Geocode.fromLatLng(pos.coords.latitude, pos.coords.longitude).then(
-        (response) => {
-          const address = response.results[0].formatted_address;
-          console.log(address);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    });
+    console.log("get");
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -130,18 +119,8 @@ const UploadItems = (props) => {
                 autoFocus
               />
 
-              <Field
-                component={TextInput}
-                type="name"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="location"
-                placeholder="search location or click on current location"
-                name="location"
-                autoComplete="location"
-              />
+              {/* Serach Location and get coordinates  */}
+              <Searchlocation />
               <Button
                 variant="contained"
                 color="primary"
@@ -159,6 +138,15 @@ const UploadItems = (props) => {
               </Button>
               {/* details  */}
               <Typography variant="h6">Details*</Typography>
+              <Field
+                component={TextInput}
+                name="detail"
+                placeholder="please enter a hint"
+                type="text"
+                style={{ width: "100%", marginBottom: "10px" }}
+                variant="outlined"
+                required
+              />
               {details.map((key) => {
                 return (
                   <TextField
