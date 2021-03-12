@@ -64,7 +64,8 @@ const useStyles = makeStyles((theme) => {
 const UploadItems = (props) => {
   const { setopenDrawerUpload, handleSubmit, item_upload } = props;
   const [details, setdetails] = useState([]);
-  const [coords, setcoords] = useState({});
+  const [coordinates, setCoordinates] = useState();
+
   const classes = useStyles();
   const submitData = (val) => {
     const detailDescriptions = [];
@@ -74,7 +75,11 @@ const UploadItems = (props) => {
     val.details = [val.detail, ...detailDescriptions];
     const CopyVal = { ...val };
     delete CopyVal.detail;
-    console.log(CopyVal);
+    if (!coordinates) {
+      alert("Please Select A Location");
+      return;
+    }
+    console.log(CopyVal, coordinates);
     // item_upload(val);
   };
   const addDetail = () => {
@@ -120,7 +125,7 @@ const UploadItems = (props) => {
               />
 
               {/* Serach Location and get coordinates  */}
-              <Searchlocation />
+              <Searchlocation setCoordinates={setCoordinates} />
               <Button
                 variant="contained"
                 color="primary"

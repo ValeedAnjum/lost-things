@@ -14,6 +14,8 @@ const Textinput = (props) => {
     input,
     type,
     placeholder,
+    autoComplete,
+    required,
     meta: { touched, error },
   } = props;
   const classes = useStyles();
@@ -34,8 +36,9 @@ const Textinput = (props) => {
         style={{ width: "100%", marginBottom: "10px" }}
         label={touched && error ? error : placeholder}
         variant="outlined"
-        required
+        required={required}
         InputProps={{ classes }}
+        autoComplete={autoComplete}
       />
     </React.Fragment>
   );
