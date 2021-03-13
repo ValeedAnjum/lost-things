@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
+import Resizer from "react-image-file-resizer";
 import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -65,6 +66,7 @@ const UploadItems = (props) => {
   const { setopenDrawerUpload, handleSubmit, item_upload } = props;
   const [details, setdetails] = useState([]);
   const [coordinates, setCoordinates] = useState();
+  const [file, setfile] = useState(null);
 
   const classes = useStyles();
   const submitData = (val) => {
@@ -91,6 +93,45 @@ const UploadItems = (props) => {
   };
   const getCurrentPosition = () => {
     console.log("get");
+  };
+  const fileChangeHandler = (event) => {
+    // var demoImage = document.querySelector('img');
+    var fileInput = false;
+    if (event.target.files[0]) {
+      // fileInput = true;
+      let reader = new FileReader();
+      let file = event.target.files[0];
+
+      reader.onloadend = () => {
+        console.log(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+    if (fileInput) {
+      Resizer.imageFileResizer(
+        event.target.files[0],
+        500,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          // console.log(uri)
+          // var demoImage = document.getElementById('display-profile-image');
+          setfile(uri);
+          if (uri) {
+            var demoImage = document.getElementById("display-profile-image");
+            demoImage.src = uri;
+          }
+        },
+        "base64"
+      );
+    }
+  };
+  console.log(file);
+  const selectImage = () => {
+    document.getElementById("select-image").click();
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -141,6 +182,13 @@ const UploadItems = (props) => {
               >
                 Upload Picture
               </Button>
+              {/* displaying picture  */}
+              <input
+                type="file"
+                onChange={fileChangeHandler}
+                accept="image/*"
+              />
+              <img id="display-profile-image" />
               {/* details  */}
               <Typography variant="h6">Details*</Typography>
               <Field

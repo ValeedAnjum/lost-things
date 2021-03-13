@@ -19,6 +19,7 @@ const Searchlocation = ({ setCoordinates }) => {
     setAddress(value);
     setCoordinates(latLan);
   };
+
   return (
     <Fragment>
       <PlacesAutocomplete
