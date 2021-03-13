@@ -98,12 +98,18 @@ const UploadItems = (props) => {
     // var demoImage = document.querySelector('img');
     var fileInput = false;
     if (event.target.files[0]) {
-      // fileInput = true;
+      fileInput = true;
       let reader = new FileReader();
       let file = event.target.files[0];
 
       reader.onloadend = () => {
-        console.log(reader.result);
+        // console.log(reader.result);
+        var demoImage = document.getElementById("display-profile-image");
+        demoImage.src = reader.result;
+        demoImage.onload = () => {
+          console.log(demoImage.naturalWidth);
+          console.log(demoImage.naturalHeight);
+        };
       };
 
       reader.readAsDataURL(file);
@@ -123,13 +129,16 @@ const UploadItems = (props) => {
           if (uri) {
             var demoImage = document.getElementById("display-profile-image");
             demoImage.src = uri;
+            demoImage.onload = () => {
+              console.log(demoImage.naturalWidth);
+              console.log(demoImage.naturalHeight);
+            };
           }
         },
         "base64"
       );
     }
   };
-  console.log(file);
   const selectImage = () => {
     document.getElementById("select-image").click();
   };
