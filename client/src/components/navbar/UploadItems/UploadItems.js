@@ -8,6 +8,7 @@ import {
   Grid,
   IconButton,
 } from "@material-ui/core";
+
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
 import Resizer from "react-image-file-resizer";
@@ -20,6 +21,7 @@ import { reduxForm, Field } from "redux-form";
 import TextInput from "../../Form/TextInput";
 import { uploadItem } from "../../../store/actions/userActions";
 import Searchlocation from "./Searchlocation/Searchlocation";
+import Datepicker from "./Datepicker";
 
 const validate = combineValidators({
   name: isRequired({ message: "Please Enter Item Description..." }),
@@ -67,6 +69,7 @@ const UploadItems = (props) => {
   const [details, setdetails] = useState([]);
   const [coordinates, setCoordinates] = useState();
   const [file, setfile] = useState(null);
+  const [selectedDate, setSelectedDate] = React.useState();
 
   const classes = useStyles();
   const submitData = (val) => {
@@ -99,20 +102,6 @@ const UploadItems = (props) => {
     var fileInput = false;
     if (event.target.files[0]) {
       fileInput = true;
-      let reader = new FileReader();
-      let file = event.target.files[0];
-
-      reader.onloadend = () => {
-        // console.log(reader.result);
-        var demoImage = document.getElementById("display-profile-image");
-        demoImage.src = reader.result;
-        demoImage.onload = () => {
-          console.log(demoImage.naturalWidth);
-          console.log(demoImage.naturalHeight);
-        };
-      };
-
-      reader.readAsDataURL(file);
     }
     if (fileInput) {
       Resizer.imageFileResizer(
@@ -123,8 +112,6 @@ const UploadItems = (props) => {
         100,
         0,
         (uri) => {
-          // console.log(uri)
-          // var demoImage = document.getElementById('display-profile-image');
           setfile(uri);
           if (uri) {
             var demoImage = document.getElementById("display-profile-image");
@@ -135,12 +122,17 @@ const UploadItems = (props) => {
             };
           }
         },
-        "base64"
+        "base64",
+        500,
+        300
       );
     }
   };
   const selectImage = () => {
     document.getElementById("select-image").click();
+  };
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -188,6 +180,7 @@ const UploadItems = (props) => {
                 variant="contained"
                 color="primary"
                 style={{ borderRadius: 0 }}
+                onClick={selectImage}
               >
                 Upload Picture
               </Button>
@@ -196,8 +189,14 @@ const UploadItems = (props) => {
                 type="file"
                 onChange={fileChangeHandler}
                 accept="image/*"
+                id="select-image"
+                style={{ display: "none" }}
               />
-              <img id="display-profile-image" />
+              <div>
+                <img id="display-profile-image" />
+              </div>
+              {/* date  */}
+              <Datepicker />
               {/* details  */}
               <Typography variant="h6">Details*</Typography>
               <Field
