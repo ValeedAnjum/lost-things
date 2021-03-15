@@ -69,22 +69,27 @@ const UploadItems = (props) => {
   const [details, setdetails] = useState([]);
   const [coordinates, setCoordinates] = useState();
   const [file, setfile] = useState(null);
-  const [selectedDate, setSelectedDate] = React.useState();
+  const [selectedDate, setselectedDate] = useState(new Date());
 
   const classes = useStyles();
   const submitData = (val) => {
+    if (!coordinates) {
+      alert("Please Select A Location");
+      return;
+    }
+    if (!file) {
+      alert("Please Select A Picture");
+      return;
+    }
     const detailDescriptions = [];
     details.forEach((id) => {
       detailDescriptions.push(document.getElementById(id).value);
     });
     val.details = [val.detail, ...detailDescriptions];
-    const CopyVal = { ...val };
+    const CopyVal = { ...val, date: selectedDate, coordinates, file };
     delete CopyVal.detail;
-    if (!coordinates) {
-      alert("Please Select A Location");
-      return;
-    }
-    console.log(CopyVal, coordinates);
+
+    console.log(CopyVal);
     // item_upload(val);
   };
   const addDetail = () => {
@@ -132,7 +137,8 @@ const UploadItems = (props) => {
     document.getElementById("select-image").click();
   };
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    console.log(date);
+    setselectedDate(date);
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -196,7 +202,11 @@ const UploadItems = (props) => {
                 <img id="display-profile-image" />
               </div>
               {/* date  */}
-              <Datepicker />
+              <Typography variant="h6">Date*</Typography>
+              <Datepicker
+                selectedDate={selectedDate}
+                handleDateChange={handleDateChange}
+              />
               {/* details  */}
               <Typography variant="h6">Details*</Typography>
               <Field

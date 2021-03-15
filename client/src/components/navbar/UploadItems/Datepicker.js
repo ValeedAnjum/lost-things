@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import MomentUtils from "@date-io/moment";
 
 import {
-  KeyboardDatePicker,
+  DatePicker,
   MuiPickersUtilsProvider,
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { Fragment } from "react";
 
-const Datepicker = () => {
-  const [selectedDate, handleDateChange] = useState(new Date());
-
+const Datepicker = ({ selectedDate, handleDateChange }) => {
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <KeyboardDatePicker
         margin="normal"
         id="date-picker-dialog"
         label="Date picker dialog"
-        format="MM/dd/yyyy"
+        format="MM/DD/yyyy"
         value={selectedDate}
         onChange={handleDateChange}
         KeyboardButtonProps={{
