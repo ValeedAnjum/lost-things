@@ -1,3 +1,3 @@
-export const uploadItem = () => () => {
-  console.log("Upload Items");
+export const uploadItem = (item) => () => {
+  console.log(item);
 };

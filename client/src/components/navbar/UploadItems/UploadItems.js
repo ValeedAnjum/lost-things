@@ -89,8 +89,8 @@ const UploadItems = (props) => {
     const CopyVal = { ...val, date: selectedDate, coordinates, file };
     delete CopyVal.detail;
 
-    console.log(CopyVal);
-    // item_upload(val);
+    // console.log(CopyVal);
+    item_upload(CopyVal);
   };
   const addDetail = () => {
     const detailsCopy = [...details];
@@ -121,10 +121,6 @@ const UploadItems = (props) => {
           if (uri) {
             var demoImage = document.getElementById("display-profile-image");
             demoImage.src = uri;
-            demoImage.onload = () => {
-              console.log(demoImage.naturalWidth);
-              console.log(demoImage.naturalHeight);
-            };
           }
         },
         "base64",
@@ -137,7 +133,6 @@ const UploadItems = (props) => {
     document.getElementById("select-image").click();
   };
   const handleDateChange = (date) => {
-    console.log(date);
     setselectedDate(date);
   };
   return (
@@ -198,9 +193,7 @@ const UploadItems = (props) => {
                 id="select-image"
                 style={{ display: "none" }}
               />
-              <div>
-                <img id="display-profile-image" />
-              </div>
+              <div>{file && <img id="display-profile-image" alt="item" />}</div>
               {/* date  */}
               <Typography variant="h6">Date*</Typography>
               <Datepicker

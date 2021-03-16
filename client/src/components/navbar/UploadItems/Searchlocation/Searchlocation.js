@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Fragment } from "react";
-import { Field } from "redux-form";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
 
-import TextInput from "../../../Form/TextInput";
 import SearchResult from "../../Searchbar/SearchResult";
 import { TextField } from "@material-ui/core";
 

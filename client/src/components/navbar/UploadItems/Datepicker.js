@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import MomentUtils from "@date-io/moment";
 
 import {
-  DatePicker,
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { Fragment } from "react";
 
 const Datepicker = ({ selectedDate, handleDateChange }) => {
   return (
