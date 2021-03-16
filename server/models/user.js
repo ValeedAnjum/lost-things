@@ -25,4 +25,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = User = mongoose.model("lpf_user", userSchema);
+module.exports = User = mongoose.model("ltf_user", userSchema);

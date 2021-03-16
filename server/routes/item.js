@@ -4,8 +4,18 @@ const router = express.Router();
 const Item = require("../models/item");
 const auth = require("../middleware/auth");
 router.post("/save-item", auth, async (req, res) => {
-  const { name, lat, lon } = req.body;
-  const item = new Item({ name, lat, lon, finderId: req.user.id });
+  const { name, date, lat, lng, file, details } = req.body;
+  // res.json(req.body);
+  // console.log(req.body);
+  const item = new Item({
+    name,
+    foundDate: date,
+    lat,
+    lng,
+    finderId: req.user.id,
+    img: file,
+    details,
+  });
 
   try {
     const itemdata = await item.save();

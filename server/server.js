@@ -4,7 +4,8 @@ const connectDB = require("./config/db");
 connectDB();
 
 //initialzinfg Middleware
-app.use(express.json({ extended: false }));
+
+app.use(express.json({ extended: false, limit: "10mb" }));
 
 //checking
 app.get("/", (req, res) => res.send("API IS UP"));

@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => {
 const UploadItems = (props) => {
   const { setopenDrawerUpload, handleSubmit, item_upload } = props;
   const [details, setdetails] = useState([]);
-  const [coordinates, setCoordinates] = useState();
+  const [coordinates, setCoordinates] = useState({ lat: 24, lng: 70 });
   const [file, setfile] = useState(null);
   const [selectedDate, setselectedDate] = useState(new Date());
 
@@ -133,7 +133,7 @@ const UploadItems = (props) => {
     document.getElementById("select-image").click();
   };
   const handleDateChange = (date) => {
-    setselectedDate(date);
+    setselectedDate(date._d);
   };
   return (
     <Container maxWidth="xl" component="main">
