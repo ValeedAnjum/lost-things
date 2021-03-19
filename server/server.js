@@ -1,11 +1,15 @@
+const { static } = require("express");
 const express = require("express");
 const app = express();
+const upload = require("express-fileupload");
 const connectDB = require("./config/db");
 connectDB();
 
 //initialzinfg Middleware
+app.use(express.static("upload"));
 
 app.use(express.json({ extended: false, limit: "10mb" }));
+app.use(upload());
 
 //checking
 app.get("/", (req, res) => res.send("API IS UP"));
