@@ -29,14 +29,29 @@ router.post("/save-item", auth, async (req, res) => {
   }
 });
 
-// @route    GET item/get-items
-// @desc     get item
+// @route    GET item/get-items/:num
+// @desc     get items by specifying numbers of items
 // @access   Public
 
-router.get("/get-items", async (req, res) => {
+router.get("/get-items/:num", async (req, res) => {
+  const { num } = req.params;
   try {
-    const items = await Item.find().select("-details");
+    const items = await Item.find().limit(Number(num)).select(["img", "name"]);
     return res.json(items);
+  } catch (error) {
+    return res.status(500).send("Server Error");
+  }
+});
+
+// @route    GET item/get-items/:id
+// @desc     get item by specifying id
+// @access   Public
+
+router.get("/get-items/:num/:id", async (req, res) => {
+  const { id, num } = req.params;
+  try {
+    const item = await Item.find({ _id: { $gt: id } }).limit(Number(num));
+    return res.json(item);
   } catch (error) {
     return res.status(500).send("Server Error");
   }

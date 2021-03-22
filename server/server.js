@@ -6,7 +6,7 @@ const connectDB = require("./config/db");
 connectDB();
 
 //initialzinfg Middleware
-app.use(express.static("upload"));
+app.use(express.static("images"));
 
 app.use(express.json({ extended: false, limit: "10mb" }));
 app.use(upload());

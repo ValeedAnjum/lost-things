@@ -21,3 +21,14 @@ export const uploadItem = (item) => async () => {
     console.log(err.response.data.errors);
   }
 };
+
+export const fetchItems = () => async (dispatch) => {
+  try {
+    dispatch({ type: "FETCH_ITEMS_START" });
+    const res = await axios.get("/item/get-items/10");
+    // console.log(res.data);
+    dispatch({ type: "FETCH_ITEMS_END", payload: res.data });
+  } catch (err) {
+    console.log(err.response.data.errors);
+  }
+};

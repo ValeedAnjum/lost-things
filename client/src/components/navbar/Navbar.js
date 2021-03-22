@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     height: "80vh",
     backgroundSize: "cover",
     position: "relative",
-    backgroundImage: "url(./sources/images/navbarbackground.jpeg)",
+    backgroundImage: "url(/sources/images/navbarbackground.jpeg)",
   },
   searchBarContainer: {
     position: "absolute",
