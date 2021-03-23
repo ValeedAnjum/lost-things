@@ -1,23 +1,54 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Card, CardMedia, Grid, makeStyles } from "@material-ui/core";
 import React from "react";
 
-const useStyles = makeStyles((theme) => {
-  return {};
+const useStyles = makeStyles(() => {
+  return {
+    parrent: {
+      position: "relative",
+      width: "100%",
+      height: "300px",
+      cursor: "pointer",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "bottom",
+      backgroundSize: "contain",
+      "&:hover": {
+        "& $overlay": {
+          opacity: "1",
+        },
+      },
+    },
+    overlay: {
+      position: "absolute",
+      bottom: "0",
+      background: "rgba(0, 0, 0, 0.5)",
+      width: "100%",
+      transition: ".5s ease",
+      opacity: "0",
+      color: "white",
+      fontSize: "20px",
+      "& p": {
+        margin: "0",
+        fontSize: "medium",
+      },
+    },
+  };
 });
 const Item = ({ id, img, name, history }) => {
+  const classes = useStyles();
   return (
     <Grid key={id} item xs={12} sm={4}>
       <div
         onClick={() => history.push(`/details/${id}`)}
+        className={classes.parrent}
         style={{
-          width: "100%",
-          height: "300px",
-          cursor: "pointer",
           backgroundImage: `url(http://localhost:5000/${img})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
         }}
-      ></div>
+      >
+        <div className={classes.overlay}>
+          <p>{name}</p>
+          <p>Khan Bela N5 Toll Plaza, Liaquatpur</p>
+        </div>
+      </div>
     </Grid>
   );
 };
