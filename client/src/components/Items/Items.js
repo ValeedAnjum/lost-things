@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { fetchItems } from "../../store/actions/userActions";
 import Item from "./Item";
 
@@ -20,22 +20,74 @@ const Items = (props) => {
   const [moreItems, setMoreItems] = useState(false);
   useEffect(() => {
     async function fetchData() {
-      await FetchItems();
-      setItems(fetchedItems);
+      try {
+        const res = await FetchItems();
+        if (res.length === 0) {
+          setMoreItems(false);
+        } else {
+          setItems(res);
+          setMoreItems(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchData();
+    //attching lazyload
+    window.addEventListener("scroll", lazyLoader);
+
+    //clean up function
+    return () => {
+      console.log("LAZY");
+      window.removeEventListener("scroll", lazyLoader);
+    };
   }, []);
-  console.log(fetchedItems);
+  const fetchNextItems = async () => {
+    const id = items[items.length - 1]._id;
+    console.log(id);
+    try {
+      const res = await FetchItems(id);
+      if (res.length === 0) {
+        setMoreItems(false);
+      } else {
+        const copyItems = [...items, ...res];
+        setItems(copyItems);
+        setMoreItems(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const lazyLoader = async () => {
+    console.log("haha");
+    const scroolIsAtBottom =
+      document.documentElement.scrollHeight - window.innerHeight - 1800 <=
+      window.scrollY;
+    if (scroolIsAtBottom && moreItems) {
+      console.log("Do something here...");
+    }
+  };
   return (
     <Fragment>
       <Grid container justify="center" style={{ marginTop: "10px" }}>
         <Grid item container style={{ width: "95%" }} spacing={2}>
-          {fetchedItems.map((item) => {
+          {items.map((item) => {
             const { name, img, _id } = item;
-            return <Item history={history} name={name} img={img} id={_id} />;
+            return (
+              <Item
+                key={_id}
+                history={history}
+                name={name}
+                img={img}
+                id={_id}
+              />
+            );
           })}
         </Grid>
       </Grid>
+      <Button onClick={fetchNextItems} variant="contained" color="primary">
+        Next
+      </Button>
     </Fragment>
   );
 };
@@ -50,7 +102,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    FetchItems: () => dispatch(fetchItems()),
+    FetchItems: (id) => dispatch(fetchItems(id)),
   };
 };
 

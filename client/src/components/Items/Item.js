@@ -1,4 +1,4 @@
-import { Card, CardMedia, Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import React from "react";
 
 const useStyles = makeStyles(() => {
@@ -29,6 +29,16 @@ const useStyles = makeStyles(() => {
       "& p": {
         margin: "0",
         fontSize: "medium",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      },
+      "& p:nth-child(1)": {
+        width: "170px",
+      },
+      "& p:nth-child(2)": {
+        width: "270px",
       },
     },
   };
@@ -45,8 +55,11 @@ const Item = ({ id, img, name, history }) => {
         }}
       >
         <div className={classes.overlay}>
-          <p>{name}</p>
           <p>Khan Bela N5 Toll Plaza, Liaquatpur</p>
+          <p>
+            Khan Bela N5 Toll Plaza, Liaquatpur Khan Bela N5 Toll Plaza,
+            Liaquatpur
+          </p>
         </div>
       </div>
     </Grid>

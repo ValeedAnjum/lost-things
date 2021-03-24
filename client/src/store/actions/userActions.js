@@ -22,12 +22,13 @@ export const uploadItem = (item) => async () => {
   }
 };
 
-export const fetchItems = () => async (dispatch) => {
+export const fetchItems = (id) => async (dispatch) => {
   try {
     dispatch({ type: "FETCH_ITEMS_START" });
-    const res = await axios.get("/item/get-items/10");
-    // console.log(res.data);
-    dispatch({ type: "FETCH_ITEMS_END", payload: res.data });
+    const res = id
+      ? await axios.get(`/item/get-items/2/${id}`)
+      : await axios.get("/item/get-items/2");
+    return res.data;
   } catch (err) {
     console.log(err.response.data.errors);
   }
