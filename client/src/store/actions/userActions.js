@@ -26,8 +26,9 @@ export const fetchItems = (id) => async (dispatch) => {
   try {
     dispatch({ type: "FETCH_ITEMS_START" });
     const res = id
-      ? await axios.get(`/item/get-items/2/${id}`)
-      : await axios.get("/item/get-items/2");
+      ? await axios.get(`/item/get-items/4/${id}`)
+      : await axios.get("/item/get-items/4");
+    dispatch({ type: "FETCH_ITEM_SUCCESS", payload: res.data });
     return res.data;
   } catch (err) {
     console.log(err.response.data.errors);

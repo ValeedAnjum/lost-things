@@ -16,18 +16,16 @@ const pictures = [
 ];
 const Items = (props) => {
   const { history, FetchItems, fetchedItems, loading } = props;
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(fetchedItems);
   const [moreItems, setMoreItems] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await FetchItems();
-        if (res.length === 0) {
-          setMoreItems(false);
-        } else {
-          setItems(res);
-          setMoreItems(true);
-        }
+        console.log("uE");
+        const more = await FetchItems();
+        console.log(more);
+        console.log(props);
       } catch (error) {
         console.log(error);
       }
@@ -38,33 +36,36 @@ const Items = (props) => {
 
     //clean up function
     return () => {
-      console.log("LAZY");
       window.removeEventListener("scroll", lazyLoader);
     };
   }, []);
+
+  // console.log(fetchedItems);
   const fetchNextItems = async () => {
-    const id = items[items.length - 1]._id;
-    console.log(id);
-    try {
-      const res = await FetchItems(id);
-      if (res.length === 0) {
-        setMoreItems(false);
-      } else {
-        const copyItems = [...items, ...res];
-        setItems(copyItems);
-        setMoreItems(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // const id = fetchedItems[fetchedItems.length - 1]._id;
+    console.log("fetchNextItems", fetchedItems);
+    // try {
+    //   const res = await FetchItems(id);
+    //   if (res.length === 0) {
+    //     setMoreItems(false);
+    //   } else {
+    //     const copyItems = [...items, ...res];
+    //     setItems(copyItems);
+    //     setMoreItems(true);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   const lazyLoader = async () => {
-    console.log("haha");
     const scroolIsAtBottom =
-      document.documentElement.scrollHeight - window.innerHeight - 1800 <=
+      document.documentElement.scrollHeight - window.innerHeight - 100 <=
       window.scrollY;
-    if (scroolIsAtBottom && moreItems) {
-      console.log("Do something here...");
+    console.log(scroolIsAtBottom);
+    console.log(fetchedItems);
+    if (scroolIsAtBottom) {
+      console.log("LAZY");
+      fetchNextItems();
     }
   };
   return (
@@ -93,7 +94,7 @@ const Items = (props) => {
 };
 
 const mapState = (state) => {
-  // console.log(state.user.items);
+  // console.log(state);
   return {
     fetchedItems: state.user.items,
     loading: state.user.loadingItems,
