@@ -28,6 +28,7 @@ export const fetchItems = (id) => async (dispatch) => {
     const res = id
       ? await axios.get(`/item/get-items/4/${id}`)
       : await axios.get("/item/get-items/4");
+    console.log(res.data);
     dispatch({ type: "FETCH_ITEM_SUCCESS", payload: res.data });
     return res.data;
   } catch (err) {

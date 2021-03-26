@@ -49,7 +49,9 @@ router.get("/get-items/:num", async (req, res) => {
 router.get("/get-items/:num/:id", async (req, res) => {
   const { id, num } = req.params;
   try {
-    const item = await Item.find({ _id: { $gt: id } }).limit(Number(num));
+    const item = await Item.find({ _id: { $gt: id } })
+      .limit(Number(num))
+      .select(["img", "name"]);
     return res.json(item);
   } catch (error) {
     return res.status(500).send("Server Error");

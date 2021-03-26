@@ -9,10 +9,9 @@ export const userReducer = (state = initState, action) => {
     case "FETCH_ITEMS_START":
       return { ...state, loadingItems: true };
     case "FETCH_ITEM_SUCCESS":
-      console.log(payload);
       return {
         ...state,
-        items: [...payload, ...state.items],
+        items: [...state.items, ...payload],
         loadingItems: false,
       };
     default:
