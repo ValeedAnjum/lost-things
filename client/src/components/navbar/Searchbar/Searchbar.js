@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Fragment } from "react";
+import { connect } from "react-redux";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
 import Grid from "@material-ui/core/Grid";
 import SearchResult from "./SearchResult";
+import { fetchItems } from "../../../store/actions/userActions";
 
-const Searchbar = () => {
+const Searchbar = ({ FetchItems }) => {
   const [address, setAddress] = useState("");
   // const [coordinates, setCoordinates] = useState({ Lat: 0, Lng: 0 });
   const handleSelect = async (value) => {
@@ -15,7 +17,7 @@ const Searchbar = () => {
     const latLan = await getLatLng(results[0]);
     console.log(latLan);
     setAddress(value);
-    // setCoordinates(latLan);
+    FetchItems(null, latLan);
   };
   return (
     <Fragment>
@@ -75,7 +77,6 @@ const Searchbar = () => {
                           }}
                         >
                           {suggestions.map((sug) => {
-                            console.log(suggestions);
                             const style = {
                               backgroundColor: sug.active
                                 ? "rgb(164 178 183)"
@@ -104,4 +105,15 @@ const Searchbar = () => {
   );
 };
 
-export default Searchbar;
+const mapState = (state) => {
+  console.log(state.user.items);
+  return {};
+};
+
+const mapDispatch = (dispatch) => {
+  return {
+    FetchItems: (id, cord) => dispatch(fetchItems(id, cord)),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Searchbar);

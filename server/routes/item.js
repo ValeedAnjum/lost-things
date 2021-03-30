@@ -58,13 +58,25 @@ router.get("/get-items/:num/:id", async (req, res) => {
   }
 });
 
-router.get("/getitem/:lat/:lon", async (req, res) => {
-  const { lat, lon } = req.params;
+router.get("/getitem/:num/:lat/:lng", async (req, res) => {
+  const { num, lat, lng } = req.params;
+  const { id } = req.query;
+  console.log(id);
   try {
-    const items = await Item.find({
-      lat: { $gte: 1, $lte: 30 },
-      lon: { $gte: 1, $lte: 80 },
-    });
+    const items = id
+      ? await Item.find({
+          lat: { $gte: 1, $lte: 30 },
+          lng: { $gte: 1, $lte: 80 },
+          _id: { $gt: id },
+        })
+          .limit(Number(num))
+          .select(["img", "name"])
+      : await Item.find({
+          lat: { $gte: 1, $lte: 30 },
+          lng: { $gte: 1, $lte: 80 },
+        })
+          .limit(Number(num))
+          .select(["img", "name"]);
     // console.log(items);
     return res.json(items);
   } catch (error) {

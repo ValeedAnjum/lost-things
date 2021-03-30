@@ -1,4 +1,3 @@
-const { static } = require("express");
 const express = require("express");
 const app = express();
 const upload = require("express-fileupload");

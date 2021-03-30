@@ -13,11 +13,11 @@ class Items extends Component {
   };
   async componentDidMount() {
     const res = await this.props.FetchItems();
-    // if (res.length === 4) {
-    //   this.setState({ items: this.props.fetchedItems, moreItems: true });
-    // } else {
-    //   this.setState({ items: this.props.fetchedItems, moreItems: false });
-    // }
+    if (res.length === 4) {
+      this.setState({ moreItems: true });
+    } else {
+      this.setState({ moreItems: false });
+    }
   }
   componentDidUpdate(prePro) {
     if (
