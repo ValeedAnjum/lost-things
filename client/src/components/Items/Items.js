@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { Button, Grid } from "@material-ui/core";
-import { fetchItems } from "../../store/actions/userActions";
+import { fetchItems, searchItems } from "../../store/actions/userActions";
 import Item from "./Item";
 
 class Items extends Component {
@@ -19,6 +19,9 @@ class Items extends Component {
       this.setState({ moreItems: false });
     }
   }
+  componentWillUnmount() {
+    return this.props.CleanUp();
+  }
   componentDidUpdate(prePro) {
     if (
       JSON.stringify(this.props.fetchedItems) !==
@@ -29,9 +32,11 @@ class Items extends Component {
   }
   fetchNextItems = async () => {
     const { items } = this.state;
-    const { FetchItems } = this.props;
+    const { FetchItems, cords } = this.props;
     const id = items[items.length - 1]._id;
-    const res = await this.props.FetchItems(id);
+    const res = cords
+      ? await this.props.SearchItems(id, cords)
+      : await this.props.FetchItems(id);
     if (res.length === 4) {
       this.setState({ items: this.props.fetchedItems, moreItems: true });
     } else {
@@ -73,16 +78,19 @@ class Items extends Component {
 }
 
 const mapState = (state) => {
-  // console.log(state);
+  // console.log(state.user.cords);
   return {
     fetchedItems: state.user.items,
     loading: state.user.loadingItems,
+    cords: state.user.cords,
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     FetchItems: (id) => dispatch(fetchItems(id)),
+    SearchItems: (cords, id) => dispatch(searchItems(cords, id)),
+    CleanUp: () => dispatch({ type: "CLEAN_FETCHED_ITEMS" }),
   };
 };
 

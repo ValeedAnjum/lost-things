@@ -35,16 +35,42 @@ export const fetchItems = (id, cords) => async (dispatch, getState) => {
   }
 };
 
-export const searchItems = (cords) => async (dispatch, getState) => {
-  console.log(getState());
-  // const { Lat, Lng } = cords;
-  // try {
-  //   dispatch({ type: "SEARCH_ITEM_START" });
-  //   const res = id
-  //     ? await axios.get(`/item/getitem/4/1/5?id=605199c9c9131a0dac60fc35`)
-  //     : await axios.get(`/item/getitem/4/1/5`);
-  //   dispatch({ type: "SEARCH_ITEM_SUCCESS", payload: res.data });
-  // } catch (error) {
-  //   console.log(error.response.data.errors);
-  // }
+export const searchItems = (id, cords) => async (dispatch, getState) => {
+  const { Lat, Lng } = cords;
+  const preCords = getState().user.cords;
+  // console.log("id", id, "pre", cords);
+
+  if (id && preCords) {
+    console.log("id", id, "pre", preCords);
+    try {
+      dispatch({ type: "SEARCH_ITEM_START" });
+      const res =
+        id && preCords
+          ? await axios.get(`/item/getitem/4/1/5?id=60519b0cc9131a0dac60fc38`)
+          : await axios.get(`/item/getitem/4/1/5`);
+      dispatch({
+        type: "SEARCH_ITEM_SUCCESS",
+        payload: { items: res.data, cords: cords },
+      });
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data.errors);
+    }
+  } else {
+    try {
+      dispatch({ type: "SEARCH_ITEM_START" });
+      const res = id
+        ? await axios.get(`/item/getitem/4/1/5?id=605199c9c9131a0dac60fc35`)
+        : await axios.get(`/item/getitem/4/1/5`);
+      console.log(cords);
+
+      dispatch({
+        type: "SEARCH_ITEM_SUCCESS",
+        payload: { items: res.data, cords: cords },
+      });
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data.errors);
+    }
+  }
 };

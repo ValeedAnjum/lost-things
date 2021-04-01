@@ -15,9 +15,9 @@ const Searchbar = ({ SearchItems }) => {
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLan = await getLatLng(results[0]);
-    console.log(latLan);
+    // console.log(latLan);
     setAddress(value);
-    SearchItems(latLan);
+    SearchItems(null, latLan);
   };
   return (
     <Fragment>
@@ -106,13 +106,12 @@ const Searchbar = ({ SearchItems }) => {
 };
 
 const mapState = (state) => {
-  console.log(state.user.items);
   return {};
 };
 
 const mapDispatch = (dispatch) => {
   return {
-    SearchItems: (cords) => dispatch(searchItems(cords)),
+    SearchItems: (id, cords) => dispatch(searchItems(id, cords)),
   };
 };
 

@@ -18,7 +18,18 @@ export const userReducer = (state = initState, action) => {
     case "SEARCH_ITEM_START":
       return { ...state, loadingItems: true };
     case "SEARCH_ITEM_SUCCESS":
-      return { ...state, loadingItems: false, items: [...payload] };
+      const exp = state.cords
+        ? [...state.items, ...payload.items]
+        : [...payload.items];
+
+      return {
+        ...state,
+        loadingItems: false,
+        items: exp,
+        cords: payload.cords,
+      };
+    case "CLEAN_FETCHED_ITEMS":
+      return { ...state, items: [], cords: null };
     default:
       return state;
   }
