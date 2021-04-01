@@ -1,6 +1,7 @@
 const initState = {
   items: [],
   loadingItems: false,
+  cords: null,
 };
 
 export const userReducer = (state = initState, action) => {
@@ -14,6 +15,10 @@ export const userReducer = (state = initState, action) => {
         items: [...state.items, ...payload],
         loadingItems: false,
       };
+    case "SEARCH_ITEM_START":
+      return { ...state, loadingItems: true };
+    case "SEARCH_ITEM_SUCCESS":
+      return { ...state, loadingItems: false, items: [...payload] };
     default:
       return state;
   }

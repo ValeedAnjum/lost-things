@@ -22,8 +22,7 @@ export const uploadItem = (item) => async () => {
   }
 };
 
-export const fetchItems = (id, cords) => async (dispatch) => {
-  console.log(cords);
+export const fetchItems = (id, cords) => async (dispatch, getState) => {
   try {
     dispatch({ type: "FETCH_ITEMS_START" });
     const res = id
@@ -34,4 +33,18 @@ export const fetchItems = (id, cords) => async (dispatch) => {
   } catch (err) {
     console.log(err.response.data.errors);
   }
+};
+
+export const searchItems = (cords) => async (dispatch, getState) => {
+  console.log(getState());
+  // const { Lat, Lng } = cords;
+  // try {
+  //   dispatch({ type: "SEARCH_ITEM_START" });
+  //   const res = id
+  //     ? await axios.get(`/item/getitem/4/1/5?id=605199c9c9131a0dac60fc35`)
+  //     : await axios.get(`/item/getitem/4/1/5`);
+  //   dispatch({ type: "SEARCH_ITEM_SUCCESS", payload: res.data });
+  // } catch (error) {
+  //   console.log(error.response.data.errors);
+  // }
 };

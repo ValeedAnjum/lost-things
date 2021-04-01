@@ -7,9 +7,9 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import Grid from "@material-ui/core/Grid";
 import SearchResult from "./SearchResult";
-import { fetchItems } from "../../../store/actions/userActions";
+import { searchItems } from "../../../store/actions/userActions";
 
-const Searchbar = ({ FetchItems }) => {
+const Searchbar = ({ SearchItems }) => {
   const [address, setAddress] = useState("");
   // const [coordinates, setCoordinates] = useState({ Lat: 0, Lng: 0 });
   const handleSelect = async (value) => {
@@ -17,7 +17,7 @@ const Searchbar = ({ FetchItems }) => {
     const latLan = await getLatLng(results[0]);
     console.log(latLan);
     setAddress(value);
-    FetchItems(null, latLan);
+    SearchItems(latLan);
   };
   return (
     <Fragment>
@@ -112,7 +112,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    FetchItems: (id, cord) => dispatch(fetchItems(id, cord)),
+    SearchItems: (cords) => dispatch(searchItems(cords)),
   };
 };
 
