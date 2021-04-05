@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Fragment } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -8,17 +9,22 @@ import PlacesAutocomplete, {
 import Grid from "@material-ui/core/Grid";
 import SearchResult from "./SearchResult";
 import { searchItems } from "../../../store/actions/userActions";
+import { compose } from "redux";
 
-const Searchbar = ({ SearchItems }) => {
+const Searchbar = (props) => {
+  const { SearchItems, location, history } = props;
   const [address, setAddress] = useState("");
   // const [coordinates, setCoordinates] = useState({ Lat: 0, Lng: 0 });
   const handleSelect = async (value) => {
+    if (location.pathname !== "/") {
+      history.push("/");
+    }
     const results = await geocodeByAddress(value);
     const latLan = await getLatLng(results[0]);
-    // console.log(latLan);
     setAddress(value);
     SearchItems(null, latLan);
   };
+
   return (
     <Fragment>
       <Grid container direction="column">
@@ -115,4 +121,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapState, mapDispatch)(Searchbar);
+export default compose(connect(mapState, mapDispatch), withRouter)(Searchbar);

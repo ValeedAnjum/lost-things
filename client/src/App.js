@@ -7,6 +7,7 @@ import Details from "./components/Details/Details";
 import Home from "./views/Home/Home";
 import ModelManager from "./components/ModelManager/ModelManager";
 import { loadUser } from "./store/actions/authActions";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -14,12 +15,14 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Navbar />
-        <ModelManager />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/details/:id" component={Details} />
-        </Switch>
+        <ScrollToTop>
+          <Navbar />
+          <ModelManager />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/details/:id" component={Details} />
+          </Switch>
+        </ScrollToTop>
       </BrowserRouter>
     </Provider>
   );

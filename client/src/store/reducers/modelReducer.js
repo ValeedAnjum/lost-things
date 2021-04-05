@@ -9,6 +9,10 @@ export const modelReducer = (state = iniState, action) => {
       return { ...state, modelName: "SingInModel" };
     case "SingInModelClose":
       return { ...state, modelName: null };
+    case "AsynchronousStart":
+      return { ...state, modelName: "AsynchronousStart" };
+    case "AsynchronousSuccess":
+      return { ...state, modelName: null };
     default:
       return { ...state };
   }

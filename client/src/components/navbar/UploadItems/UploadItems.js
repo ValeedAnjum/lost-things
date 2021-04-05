@@ -89,8 +89,8 @@ const UploadItems = (props) => {
     const CopyVal = { ...val, date: selectedDate, coordinates, file };
     delete CopyVal.detail;
 
-    // console.log(CopyVal);
-    item_upload(CopyVal);
+    console.log(CopyVal);
+    // item_upload(CopyVal);
   };
   const addDetail = () => {
     const detailsCopy = [...details];

@@ -55,7 +55,7 @@ const Item = ({ id, img, name, history }) => {
         }}
       >
         <div className={classes.overlay}>
-          <p>Khan Bela N5 Toll Plaza, Liaquatpur</p>
+          <p>{name}</p>
           <p>
             Khan Bela N5 Toll Plaza, Liaquatpur Khan Bela N5 Toll Plaza,
             Liaquatpur

@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
+import Loader from "./Loader/Loader";
 const ModelManager = ({ ModelName }) => {
   switch (ModelName) {
     case "AsynchronousStart":
-      return <h1>Model</h1>;
+      return <Loader />;
     default:
       return null;
   }

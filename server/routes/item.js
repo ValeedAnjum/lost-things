@@ -84,6 +84,18 @@ router.get("/getitem/:num/:lat/:lng", async (req, res) => {
   }
 });
 
+// @route    POST item/getitemdetails/:id
+// @desc     Uploading a file it is a temp route
+// @access   Public
+router.get("/getitemdetails/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const detail = await Item.findById(id);
+    return res.json(detail);
+  } catch (error) {
+    return res.status(500).send("Server Error");
+  }
+});
 // @route    POST item/file_upload
 // @desc     Uploading a file it is a temp route
 // @access   Public
