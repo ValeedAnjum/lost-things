@@ -7,9 +7,20 @@ const auth = require("../middleware/auth");
 // @desc     Saving item
 // @access   Private
 router.post("/save-item", auth, async (req, res) => {
-  const { name, date, lat, lng, file, details } = req.body;
-  // res.json(req.body);
-  // console.log(req.body);
+  const { name, date, lat, lng, details } = req.body;
+  let file;
+  if (req.files) {
+    // console.log(req.files.image);
+    const image = req.files.image;
+    image.mv(`./upload/` + req.files.image.name, function (err) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send("File Uploaded");
+        console.log(__dirname + `/req.files.image.name`);
+      }
+    });
+  }
   const item = new Item({
     name,
     foundDate: date,
@@ -102,15 +113,18 @@ router.get("/getitemdetails/:id", async (req, res) => {
 
 router.post("/upload", (req, res) => {
   const { name } = req.body;
+  console.log(req.files);
   if (req.files) {
     // console.log(req.files.image);
     const image = req.files.image;
-    image.mv(`./upload/` + req.files.image.name, function (err) {
+    image.mv(`./uploads/` + req.files.image.name, function (err) {
       if (err) {
         res.send(err);
       } else {
         res.send("File Uploaded");
-        console.log(__dirname + `/req.files.image.name`);
+        // console.log(__dirname + `/req.files.image.name`);
+        console.log(req.files.image.name);
+        return req.files.image.name;
       }
     });
   }

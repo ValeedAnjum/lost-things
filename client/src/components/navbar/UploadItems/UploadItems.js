@@ -19,7 +19,7 @@ import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
 
 import TextInput from "../../Form/TextInput";
-import { uploadItem } from "../../../store/actions/userActions";
+import { uploadImage, uploadItem } from "../../../store/actions/userActions";
 import Searchlocation from "./Searchlocation/Searchlocation";
 import Datepicker from "./Datepicker";
 
@@ -65,7 +65,12 @@ const useStyles = makeStyles((theme) => {
   };
 });
 const UploadItems = (props) => {
-  const { setopenDrawerUpload, handleSubmit, item_upload } = props;
+  const {
+    setopenDrawerUpload,
+    handleSubmit,
+    item_upload,
+    upload_image,
+  } = props;
   const [details, setdetails] = useState([]);
   const [coordinates, setCoordinates] = useState({ lat: 24, lng: 70 });
   const [file, setfile] = useState(null);
@@ -105,29 +110,29 @@ const UploadItems = (props) => {
   const fileChangeHandler = (event) => {
     // var demoImage = document.querySelector('img');
     var fileInput = false;
-    if (event.target.files[0]) {
-      fileInput = true;
-    }
-    if (fileInput) {
-      Resizer.imageFileResizer(
-        event.target.files[0],
-        500,
-        300,
-        "JPEG",
-        100,
-        0,
-        (uri) => {
-          setfile(uri);
-          if (uri) {
-            var demoImage = document.getElementById("display-profile-image");
-            demoImage.src = uri;
-          }
-        },
-        "base64",
-        500,
-        300
-      );
-    }
+    event.target.files[0] && upload_image(event.target.files[0]);
+    // setfile(event.target.files[0]) &&
+
+    // if (fileInput) {
+    //   Resizer.imageFileResizer(
+    //     event.target.files[0],
+    //     500,
+    //     300,
+    //     "JPEG",
+    //     100,
+    //     0,
+    //     (uri) => {
+    //       setfile(uri);
+    //       if (uri) {
+    //         var demoImage = document.getElementById("display-profile-image");
+    //         demoImage.src = uri;
+    //       }
+    //     },
+    //     "base64",
+    //     500,
+    //     300
+    //   );
+    // }
   };
   const selectImage = () => {
     document.getElementById("select-image").click();
@@ -253,6 +258,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     item_upload: (data) => dispatch(uploadItem(data)),
+    upload_image: (image) => dispatch(uploadImage(image)),
   };
 };
 
