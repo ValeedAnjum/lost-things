@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const upload = require("express-fileupload");
+const cors = require("cors");
 const connectDB = require("./config/db");
 connectDB();
 
@@ -8,8 +8,7 @@ connectDB();
 app.use(express.static("uploads"));
 
 app.use(express.json({ extended: false, limit: "10mb" }));
-app.use(upload());
-
+app.use(cors());
 //checking
 app.get("/", (req, res) => res.send("API IS UP"));
 

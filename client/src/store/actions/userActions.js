@@ -93,16 +93,18 @@ export const fetchProductDetails = (id) => async () => {
 };
 
 export const uploadImage = (file) => async () => {
+  const formData = new FormData();
   console.log(file);
+  formData.append("file", file);
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   };
   try {
-    const res = await axios.post("/item/upload", file, config);
+    const res = await axios.post("/item/upload", formData, config);
     console.log(res.data);
   } catch (error) {
-    console.log(error.response.data.errors);
+    console.log(error);
   }
 };

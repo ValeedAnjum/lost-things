@@ -1,7 +1,19 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 const Item = require("../models/item");
 const auth = require("../middleware/auth");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+var upload = multer({ storage: storage }).single("file");
 
 // @route    POST item/save-item
 // @desc     Saving item
@@ -110,24 +122,17 @@ router.get("/getitemdetails/:id", async (req, res) => {
 // @route    POST item/file_upload
 // @desc     Uploading a file it is a temp route
 // @access   Public
-
+// router.route("/upload").post(upload, async (req, res, next) => {
 router.post("/upload", (req, res) => {
-  const { name } = req.body;
-  console.log(req.files);
-  if (req.files) {
-    // console.log(req.files.image);
-    const image = req.files.image;
-    image.mv(`./uploads/` + req.files.image.name, function (err) {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send("File Uploaded");
-        // console.log(__dirname + `/req.files.image.name`);
-        console.log(req.files.image.name);
-        return req.files.image.name;
-      }
-    });
-  }
+  upload(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    }
+    console.log(req.file);
+    return res.status(200).send(req.file);
+  });
 });
 
 module.exports = router;

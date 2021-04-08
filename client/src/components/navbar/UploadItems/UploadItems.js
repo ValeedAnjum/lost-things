@@ -109,10 +109,9 @@ const UploadItems = (props) => {
   };
   const fileChangeHandler = (event) => {
     // var demoImage = document.querySelector('img');
-    var fileInput = false;
+    // var fileInput = false;
     event.target.files[0] && upload_image(event.target.files[0]);
     // setfile(event.target.files[0]) &&
-
     // if (fileInput) {
     //   Resizer.imageFileResizer(
     //     event.target.files[0],
