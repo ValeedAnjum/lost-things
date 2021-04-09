@@ -94,8 +94,8 @@ export const fetchProductDetails = (id) => async () => {
 
 export const uploadImage = (file) => async () => {
   const formData = new FormData();
-  console.log(file);
   formData.append("file", file);
+
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",

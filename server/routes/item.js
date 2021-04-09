@@ -9,7 +9,8 @@ var storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    // cb(null, Date.now() + "-" + file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -131,7 +132,7 @@ router.post("/upload", (req, res) => {
       return res.status(500).json(err);
     }
     console.log(req.file);
-    return res.status(200).send(req.file);
+    return res.status(200).send(req.file.filename);
   });
 });
 

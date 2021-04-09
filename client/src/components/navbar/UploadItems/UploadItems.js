@@ -95,6 +95,7 @@ const UploadItems = (props) => {
     delete CopyVal.detail;
 
     console.log(CopyVal);
+    // upload_image(CopyVal);
     // item_upload(CopyVal);
   };
   const addDetail = () => {
@@ -108,30 +109,36 @@ const UploadItems = (props) => {
     console.log("get");
   };
   const fileChangeHandler = (event) => {
-    // var demoImage = document.querySelector('img');
-    // var fileInput = false;
-    event.target.files[0] && upload_image(event.target.files[0]);
+    const demoImage = document.querySelector("img");
+    let fileInput = false;
+    // event.target.files[0] && upload_image(event.target.files[0]);
     // setfile(event.target.files[0]) &&
-    // if (fileInput) {
-    //   Resizer.imageFileResizer(
-    //     event.target.files[0],
-    //     500,
-    //     300,
-    //     "JPEG",
-    //     100,
-    //     0,
-    //     (uri) => {
-    //       setfile(uri);
-    //       if (uri) {
-    //         var demoImage = document.getElementById("display-profile-image");
-    //         demoImage.src = uri;
-    //       }
-    //     },
-    //     "base64",
-    //     500,
-    //     300
-    //   );
-    // }
+    if (event.target.files[0]) {
+      fileInput = true;
+    }
+    if (fileInput) {
+      Resizer.imageFileResizer(
+        event.target.files[0],
+        500,
+        300,
+        "JPEG",
+        100,
+        0,
+        (file) => {
+          setfile(file);
+          upload_image(file);
+          if (file) {
+            //converting file to base64 uri
+            const objectURL = URL.createObjectURL(file);
+            var demoImage = document.getElementById("display-profile-image");
+            demoImage.src = objectURL;
+          }
+        },
+        "file",
+        500,
+        300
+      );
+    }
   };
   const selectImage = () => {
     document.getElementById("select-image").click();
