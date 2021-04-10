@@ -8,6 +8,10 @@ const itemSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
   details: [
     {
       type: String,

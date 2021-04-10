@@ -5,12 +5,11 @@ const useStyles = makeStyles(() => {
   return {
     parrent: {
       position: "relative",
+      border: "1px solid #e7e3e3",
       width: "100%",
       height: "300px",
       cursor: "pointer",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "bottom",
-      backgroundSize: "contain",
+
       "&:hover": {
         "& $overlay": {
           opacity: "1",
@@ -43,7 +42,7 @@ const useStyles = makeStyles(() => {
     },
   };
 });
-const Item = ({ id, img, name, history }) => {
+const Item = ({ id, img, name, history, address }) => {
   const classes = useStyles();
   return (
     <Grid key={id} item xs={12} sm={4}>
@@ -52,14 +51,14 @@ const Item = ({ id, img, name, history }) => {
         className={classes.parrent}
         style={{
           backgroundImage: `url(http://localhost:5000/${img})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
         }}
       >
         <div className={classes.overlay}>
           <p>{name}</p>
-          <p>
-            Khan Bela N5 Toll Plaza, Liaquatpur Khan Bela N5 Toll Plaza,
-            Liaquatpur
-          </p>
+          <p>{address}</p>
         </div>
       </div>
     </Grid>

@@ -8,8 +8,8 @@ import PlacesAutocomplete, {
 import SearchResult from "../../Searchbar/SearchResult";
 import { TextField } from "@material-ui/core";
 
-const Searchlocation = ({ setCoordinates }) => {
-  const [address, setAddress] = useState("");
+const Searchlocation = ({ setCoordinates, setAddress, address }) => {
+  // const [address, setAddress] = useState("");
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLan = await getLatLng(results[0]);

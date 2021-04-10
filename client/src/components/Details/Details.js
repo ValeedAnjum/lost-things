@@ -31,7 +31,7 @@ const Details = (props) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <h1>{itemInfo.name}</h1>
-            <p>Rahim Yar Khan, Ada Khan Pur</p>
+            <p>{itemInfo.address}</p>
             <div>
               <h3>Details</h3>
               <ul>

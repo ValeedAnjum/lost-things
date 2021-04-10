@@ -7,16 +7,42 @@ export const uploadItem = (item) => async () => {
     details,
     coordinates: { lat, lng },
     file,
+    address,
   } = item;
-  const config = {
+  const configApplicationJson = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  const body = JSON.stringify({ name, date, details, lat, lng, file });
+  const configMultiFormData = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
   try {
-    const res = await axios.post("/item/save-item", body, config);
-    console.log(res.data);
+    const formData = new FormData();
+    formData.append("file", file);
+    const imageRes = await axios.post(
+      "/item/upload",
+      formData,
+      configMultiFormData
+    );
+    // console.log(imageRes.data);
+    const body = JSON.stringify({
+      name,
+      date,
+      details,
+      lat,
+      lng,
+      file: imageRes.data,
+      address,
+    });
+    const res = await axios.post(
+      "/item/save-item",
+      body,
+      configApplicationJson
+    );
+    // console.log(res.data);
   } catch (err) {
     console.log(err.response.data.errors);
   }
@@ -103,7 +129,8 @@ export const uploadImage = (file) => async () => {
   };
   try {
     const res = await axios.post("/item/upload", formData, config);
-    console.log(res.data);
+    // console.log(res.data);
+    return res.data;
   } catch (error) {
     console.log(error);
   }

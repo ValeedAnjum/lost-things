@@ -75,7 +75,7 @@ const UploadItems = (props) => {
   const [coordinates, setCoordinates] = useState({ lat: 24, lng: 70 });
   const [file, setfile] = useState(null);
   const [selectedDate, setselectedDate] = useState(new Date());
-
+  const [address, setAddress] = useState("");
   const classes = useStyles();
   const submitData = (val) => {
     if (!coordinates) {
@@ -91,12 +91,12 @@ const UploadItems = (props) => {
       detailDescriptions.push(document.getElementById(id).value);
     });
     val.details = [val.detail, ...detailDescriptions];
-    const CopyVal = { ...val, date: selectedDate, coordinates, file };
+    const CopyVal = { ...val, date: selectedDate, coordinates, file, address };
     delete CopyVal.detail;
 
-    console.log(CopyVal);
+    // console.log(CopyVal);
     // upload_image(CopyVal);
-    // item_upload(CopyVal);
+    item_upload(CopyVal);
   };
   const addDetail = () => {
     const detailsCopy = [...details];
@@ -109,7 +109,7 @@ const UploadItems = (props) => {
     console.log("get");
   };
   const fileChangeHandler = (event) => {
-    const demoImage = document.querySelector("img");
+    // const demoImage = document.querySelector("img");
     let fileInput = false;
     // event.target.files[0] && upload_image(event.target.files[0]);
     // setfile(event.target.files[0]) &&
@@ -126,11 +126,10 @@ const UploadItems = (props) => {
         0,
         (file) => {
           setfile(file);
-          upload_image(file);
           if (file) {
             //converting file to base64 uri
             const objectURL = URL.createObjectURL(file);
-            var demoImage = document.getElementById("display-profile-image");
+            const demoImage = document.getElementById("display-profile-image");
             demoImage.src = objectURL;
           }
         },
@@ -179,7 +178,11 @@ const UploadItems = (props) => {
               />
 
               {/* Serach Location and get coordinates  */}
-              <Searchlocation setCoordinates={setCoordinates} />
+              <Searchlocation
+                setCoordinates={setCoordinates}
+                setAddress={setAddress}
+                address={address}
+              />
               <Button
                 variant="contained"
                 color="primary"

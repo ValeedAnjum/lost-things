@@ -20,20 +20,8 @@ var upload = multer({ storage: storage }).single("file");
 // @desc     Saving item
 // @access   Private
 router.post("/save-item", auth, async (req, res) => {
-  const { name, date, lat, lng, details } = req.body;
-  let file;
-  if (req.files) {
-    // console.log(req.files.image);
-    const image = req.files.image;
-    image.mv(`./upload/` + req.files.image.name, function (err) {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send("File Uploaded");
-        console.log(__dirname + `/req.files.image.name`);
-      }
-    });
-  }
+  const { name, date, lat, lng, details, file, address } = req.body;
+
   const item = new Item({
     name,
     foundDate: date,
@@ -42,6 +30,7 @@ router.post("/save-item", auth, async (req, res) => {
     finderId: req.user.id,
     img: file,
     details,
+    address,
   });
 
   try {
@@ -59,7 +48,9 @@ router.post("/save-item", auth, async (req, res) => {
 router.get("/get-items/:num", async (req, res) => {
   const { num } = req.params;
   try {
-    const items = await Item.find().limit(Number(num)).select(["img", "name"]);
+    const items = await Item.find()
+      .limit(Number(num))
+      .select(["img", "name", "address"]);
     return res.json(items);
   } catch (error) {
     return res.status(500).send("Server Error");
@@ -75,7 +66,7 @@ router.get("/get-items/:num/:id", async (req, res) => {
   try {
     const item = await Item.find({ _id: { $gt: id } })
       .limit(Number(num))
-      .select(["img", "name"]);
+      .select(["img", "name", "address"]);
     return res.json(item);
   } catch (error) {
     return res.status(500).send("Server Error");
@@ -94,13 +85,13 @@ router.get("/getitem/:num/:lat/:lng", async (req, res) => {
           _id: { $gt: id },
         })
           .limit(Number(num))
-          .select(["img", "name"])
+          .select(["img", "name", "address"])
       : await Item.find({
           lat: { $gte: 1, $lte: 30 },
           lng: { $gte: 1, $lte: 80 },
         })
           .limit(Number(num))
-          .select(["img", "name"]);
+          .select(["img", "name", "address"]);
     // console.log(items);
     return res.json(items);
   } catch (error) {

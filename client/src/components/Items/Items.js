@@ -50,7 +50,7 @@ class Items extends Component {
         <Grid container justify="center" style={{ marginTop: "10px" }}>
           <Grid item container style={{ width: "95%" }} spacing={2}>
             {this.state.items.map((item) => {
-              const { name, img, _id } = item;
+              const { name, img, _id, address } = item;
               return (
                 <Item
                   key={_id}
@@ -58,6 +58,7 @@ class Items extends Component {
                   name={name}
                   img={img}
                   id={_id}
+                  address={address}
                 />
               );
             })}
@@ -78,7 +79,7 @@ class Items extends Component {
 }
 
 const mapState = (state) => {
-  // console.log(state.user.cords);
+  // console.log(state.user.items);
   return {
     fetchedItems: state.user.items,
     loading: state.user.loadingItems,
