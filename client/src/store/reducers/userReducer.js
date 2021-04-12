@@ -22,7 +22,6 @@ export const userReducer = (state = initState, action) => {
     case "SEARCH_ITEM_START":
       return { ...state, loadingItems: true };
     case "SEARCH_ITEM_SUCCESS":
-      console.log(payload.items.length === 4);
       const exp = state.cords
         ? [...state.items, ...payload.items]
         : [...payload.items];

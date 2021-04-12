@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -14,7 +14,6 @@ import { compose } from "redux";
 const Searchbar = (props) => {
   const { SearchItems, location, history } = props;
   const [address, setAddress] = useState("");
-  // const [coordinates, setCoordinates] = useState({ Lat: 0, Lng: 0 });
   const handleSelect = async (value) => {
     if (location.pathname !== "/") {
       history.push("/");

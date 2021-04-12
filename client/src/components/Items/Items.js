@@ -13,12 +13,6 @@ class Items extends Component {
   };
   async componentDidMount() {
     await this.props.FetchItems();
-    // const res = await this.props.FetchItems();
-    // if (res.length === 4) {
-    //   this.setState({ moreItems: true });
-    // } else {
-    //   this.setState({ moreItems: false });
-    // }
   }
   componentWillUnmount() {
     return this.props.CleanUp();
@@ -33,20 +27,14 @@ class Items extends Component {
   }
   fetchNextItems = async () => {
     const { items } = this.state;
-    const { FetchItems, cords } = this.props;
-    console.log(items);
+    const { cords } = this.props;
     const id = items[items.length - 1]._id;
-    const res = cords
+    cords
       ? await this.props.SearchItems(id, cords)
       : await this.props.FetchItems(id);
-    if (res.length === 4) {
-      this.setState({ items: this.props.fetchedItems, moreItems: true });
-    } else {
-      this.setState({ items: this.props.fetchedItems, moreItems: false });
-    }
   };
   render() {
-    const { fetchedItems, history } = this.props;
+    const { history } = this.props;
     return (
       <Fragment>
         <Grid container justify="center" style={{ marginTop: "10px" }}>
@@ -64,6 +52,7 @@ class Items extends Component {
                 />
               );
             })}
+            {this.state.items.length === 0 && <h1>No items</h1>}
           </Grid>
         </Grid>
         {this.props.moreItems && (
@@ -82,7 +71,7 @@ class Items extends Component {
 
 const mapState = (state) => {
   // console.log(state.user.items);
-  console.log(state.user.moreItems);
+  // console.log(state.user.moreItems);
   return {
     fetchedItems: state.user.items,
     loading: state.user.loadingItems,

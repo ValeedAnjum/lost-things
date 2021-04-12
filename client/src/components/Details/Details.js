@@ -8,13 +8,20 @@ import { Button } from "@material-ui/core";
 import Wallet from "../../Assets/Images/wallet.jpg";
 import { fetchProductDetails } from "../../store/actions/userActions";
 const Details = (props) => {
-  const { FetchProductDetails } = props;
+  const {
+    FetchProductDetails,
+    AsynchronousStartModel,
+    AsynchronousSuccessModel,
+  } = props;
   const [itemInfo, setItemInfo] = useState(null);
   useEffect(() => {
     (async function () {
+      AsynchronousStartModel();
       const res = await FetchProductDetails(props.match.params.id);
+      AsynchronousSuccessModel();
       setItemInfo(res);
     })();
+    document.getElementsByClassName("location-search-input")[0].value = "";
   }, []);
   return (
     <Fragment>
@@ -55,6 +62,8 @@ const Details = (props) => {
 const mapDispatch = (dispatch) => {
   return {
     FetchProductDetails: (id) => dispatch(fetchProductDetails(id)),
+    AsynchronousStartModel: () => dispatch({ type: "AsynchronousStart" }),
+    AsynchronousSuccessModel: () => dispatch({ type: "AsynchronousSuccess" }),
   };
 };
 

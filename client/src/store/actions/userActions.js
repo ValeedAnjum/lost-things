@@ -66,14 +66,7 @@ export const fetchItems = (id, cords) => async (dispatch, getState) => {
 export const searchItems = (id, cords) => async (dispatch, getState) => {
   const { lat, lng } = cords;
   const preCords = getState().user.cords;
-  console.log("Search Item");
-  // console.log("id", id, "pre", cords);
-  // console.log("oldCords", preCords, "new", cords);
-  // if (JSON.stringify(preCords) === JSON.stringify(cords))
-  //   dispatch({ type: "CLEAN_UP" });
   if (id && preCords && JSON.stringify(preCords) === JSON.stringify(cords)) {
-    // console.log("id", id, "pre", preCords);
-    console.log("1");
     const { lat, lng } = preCords;
     try {
       dispatch({ type: "SEARCH_ITEM_START" });
@@ -83,10 +76,6 @@ export const searchItems = (id, cords) => async (dispatch, getState) => {
         id && preCords
           ? await axios.get(`/item/getitem/4/${lat}/${lng}?id=${id}`)
           : await axios.get(`/item/getitem/4/${lat}/${lng}`);
-      // const res =
-      //   id && preCords
-      //     ? await axios.get(`/item/getitem/4/28/70?id=${id}`)
-      //     : await axios.get(`/item/getitem/4/28/70`);
       dispatch({
         type: "SEARCH_ITEM_SUCCESS",
         payload: { items: res.data, cords: cords },
@@ -99,16 +88,12 @@ export const searchItems = (id, cords) => async (dispatch, getState) => {
     }
   } else {
     try {
-      console.log("2");
       dispatch({ type: "CLEAN_UP" });
       dispatch({ type: "SEARCH_ITEM_START" });
       dispatch({ type: "AsynchronousStart" });
       const res = id
         ? await axios.get(`/item/getitem/4/${lat}/${lng}?id=${id}`)
         : await axios.get(`/item/getitem/4/${lat}/${lng}`);
-      // const res = id
-      //   ? await axios.get(`/item/getitem/4/28/70?id=${id}`)
-      //   : await axios.get(`/item/getitem/4/28/70`);
       dispatch({
         type: "SEARCH_ITEM_SUCCESS",
         payload: { items: res.data, cords: cords },
