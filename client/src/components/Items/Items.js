@@ -33,6 +33,7 @@ class Items extends Component {
   fetchNextItems = async () => {
     const { items } = this.state;
     const { FetchItems, cords } = this.props;
+    console.log(items);
     const id = items[items.length - 1]._id;
     const res = cords
       ? await this.props.SearchItems(id, cords)

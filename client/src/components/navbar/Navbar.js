@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = (props) => {
   const [openDrawerLogin, setopenDrawerLogin] = useState(false);
   const [openDrawerRegister, setopenDrawerRegister] = useState(false);
-  const [openDrawerUpload, setopenDrawerUpload] = useState(true);
+  const [openDrawerUpload, setopenDrawerUpload] = useState(false);
   const [mobileMenu, setmobileMenu] = useState(false);
   const { auth, logout } = props;
   const { history } = props;

@@ -76,23 +76,25 @@ router.get("/get-items/:num/:id", async (req, res) => {
 router.get("/getitem/:num/:lat/:lng", async (req, res) => {
   const { num, lat, lng } = req.params;
   const { id } = req.query;
-  console.log(id);
+  const [latRange, lngRange] = [
+    [Math.floor(lat), Math.floor(lat) + 2],
+    [Math.floor(lng), Math.floor(lng) + 2],
+  ];
   try {
     const items = id
       ? await Item.find({
-          lat: { $gte: 1, $lte: 30 },
-          lng: { $gte: 1, $lte: 80 },
+          lat: { $gte: latRange[0], $lte: latRange[1] },
+          lng: { $gte: lngRange[0], $lte: lngRange[1] },
           _id: { $gt: id },
         })
           .limit(Number(num))
           .select(["img", "name", "address"])
       : await Item.find({
-          lat: { $gte: 1, $lte: 30 },
-          lng: { $gte: 1, $lte: 80 },
+          lat: { $gte: latRange[0], $lte: latRange[1] },
+          lng: { $gte: lngRange[0], $lte: lngRange[1] },
         })
           .limit(Number(num))
           .select(["img", "name", "address"]);
-    // console.log(items);
     return res.json(items);
   } catch (error) {
     return res.status(500).send("Srever error");
