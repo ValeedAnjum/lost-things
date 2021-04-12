@@ -9,15 +9,16 @@ import Item from "./Item";
 class Items extends Component {
   state = {
     items: this.props.fetchedItems,
-    moreItems: false,
+    moreItems: this.props.moreItems,
   };
   async componentDidMount() {
-    const res = await this.props.FetchItems();
-    if (res.length === 4) {
-      this.setState({ moreItems: true });
-    } else {
-      this.setState({ moreItems: false });
-    }
+    await this.props.FetchItems();
+    // const res = await this.props.FetchItems();
+    // if (res.length === 4) {
+    //   this.setState({ moreItems: true });
+    // } else {
+    //   this.setState({ moreItems: false });
+    // }
   }
   componentWillUnmount() {
     return this.props.CleanUp();
@@ -65,7 +66,7 @@ class Items extends Component {
             })}
           </Grid>
         </Grid>
-        {this.state.moreItems && (
+        {this.props.moreItems && (
           <Button
             onClick={this.fetchNextItems}
             variant="contained"
@@ -81,10 +82,12 @@ class Items extends Component {
 
 const mapState = (state) => {
   // console.log(state.user.items);
+  console.log(state.user.moreItems);
   return {
     fetchedItems: state.user.items,
     loading: state.user.loadingItems,
     cords: state.user.cords,
+    moreItems: state.user.moreItems,
   };
 };
 
