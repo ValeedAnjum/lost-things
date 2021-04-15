@@ -84,6 +84,12 @@ const Navbar = (props) => {
                     onClick={() => setopenDrawerRegister(true)}
                   />
                 </ListItem>
+                <ListItem button>
+                  <ListItemText
+                    primary={"Post Item"}
+                    onClick={() => setopenDrawerUpload(true)}
+                  />
+                </ListItem>
               </List>
             </Drawer>
           </Hidden>

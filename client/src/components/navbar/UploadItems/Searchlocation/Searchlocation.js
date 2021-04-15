@@ -4,12 +4,20 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-
 import SearchResult from "../../Searchbar/SearchResult";
-import { TextField } from "@material-ui/core";
+import { makeStyles, TextField } from "@material-ui/core";
 
+const useStyles = makeStyles(() => {
+  return {
+    root: {
+      "& .MuiOutlinedInput-root": {
+        borderRadius: "0",
+      },
+    },
+  };
+});
 const Searchlocation = ({ setCoordinates, setAddress, address }) => {
-  // const [address, setAddress] = useState("");
+  const classes = useStyles();
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLan = await getLatLng(results[0]);
@@ -21,6 +29,7 @@ const Searchlocation = ({ setCoordinates, setAddress, address }) => {
   return (
     <Fragment>
       <PlacesAutocomplete
+        className={classes.root}
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
@@ -30,9 +39,9 @@ const Searchlocation = ({ setCoordinates, setAddress, address }) => {
             <Fragment>
               <TextField
                 {...getInputProps({
-                  placeholder: "Search...",
                   className: "location-search-input",
                 })}
+                className={classes.root}
                 type="name"
                 variant="outlined"
                 margin="normal"

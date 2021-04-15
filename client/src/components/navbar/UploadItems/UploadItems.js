@@ -62,6 +62,23 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: theme.palette.secondary.main,
       cursor: "pointer",
     },
+    itemImage: {
+      [theme.breakpoints.down("sm")]: {
+        width: "100%",
+      },
+    },
+    datePicker: {
+      "& .MuiFormControl-root": {
+        width: "100%",
+      },
+    },
+    extraTextFields: {
+      marginBottom: "10px",
+      width: "100%",
+      "& .MuiOutlinedInput-root": {
+        borderRadius: "0",
+      },
+    },
   };
 });
 const UploadItems = (props) => {
@@ -72,7 +89,7 @@ const UploadItems = (props) => {
     upload_image,
   } = props;
   const [details, setdetails] = useState([]);
-  const [coordinates, setCoordinates] = useState({ lat: 24, lng: 70 });
+  const [coordinates, setCoordinates] = useState(null);
   const [file, setfile] = useState(null);
   const [selectedDate, setselectedDate] = useState(new Date());
   const [address, setAddress] = useState("");
@@ -88,15 +105,18 @@ const UploadItems = (props) => {
     }
     const detailDescriptions = [];
     details.forEach((id) => {
-      detailDescriptions.push(document.getElementById(id).value);
+      const detailValue = document.getElementById(id).value.trim();
+      if (detailValue != "") {
+        detailDescriptions.push(document.getElementById(id).value);
+      }
     });
     val.details = [val.detail, ...detailDescriptions];
     const CopyVal = { ...val, date: selectedDate, coordinates, file, address };
     delete CopyVal.detail;
 
-    // console.log(CopyVal);
+    console.log(CopyVal);
     // upload_image(CopyVal);
-    item_upload(CopyVal);
+    // item_upload(CopyVal);
   };
   const addDetail = () => {
     const detailsCopy = [...details];
@@ -129,7 +149,7 @@ const UploadItems = (props) => {
           if (file) {
             //converting file to base64 uri
             const objectURL = URL.createObjectURL(file);
-            const demoImage = document.getElementById("display-profile-image");
+            const demoImage = document.getElementById("display-item-image");
             demoImage.src = objectURL;
           }
         },
@@ -183,17 +203,18 @@ const UploadItems = (props) => {
                 setAddress={setAddress}
                 address={address}
               />
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={getCurrentPosition}
                 style={{ borderRadius: 0 }}
               >
                 Current Location
-              </Button>
+              </Button> */}
               <Button
                 variant="contained"
                 color="primary"
+                fullWidth
                 style={{ borderRadius: 0 }}
                 onClick={selectImage}
               >
@@ -207,13 +228,23 @@ const UploadItems = (props) => {
                 id="select-image"
                 style={{ display: "none" }}
               />
-              <div>{file && <img id="display-profile-image" alt="item" />}</div>
+              <div style={{ textAlign: "center", margin: "5px 0" }}>
+                {file && (
+                  <img
+                    id="display-item-image"
+                    className={classes.itemImage}
+                    alt="item"
+                  />
+                )}
+              </div>
               {/* date  */}
               <Typography variant="h6">Date*</Typography>
-              <Datepicker
-                selectedDate={selectedDate}
-                handleDateChange={handleDateChange}
-              />
+              <div className={classes.datePicker}>
+                <Datepicker
+                  selectedDate={selectedDate}
+                  handleDateChange={handleDateChange}
+                />
+              </div>
               {/* details  */}
               <Typography variant="h6">Details*</Typography>
               <Field
@@ -231,7 +262,7 @@ const UploadItems = (props) => {
                     key={key}
                     id={key.toString()}
                     type="text"
-                    style={{ width: "100%", marginBottom: "10px" }}
+                    className={classes.extraTextFields}
                     variant="outlined"
                     required
                   />
