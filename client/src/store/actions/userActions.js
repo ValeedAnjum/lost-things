@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const uploadItem = (item) => async () => {
+export const uploadItem = (item) => async (dispatch) => {
   const {
     name,
     date,
@@ -22,6 +22,7 @@ export const uploadItem = (item) => async () => {
   try {
     const formData = new FormData();
     formData.append("file", file);
+    dispatch({ type: "AsynchronousStart" });
     const imageRes = await axios.post(
       "/item/upload",
       formData,
@@ -42,7 +43,12 @@ export const uploadItem = (item) => async () => {
       body,
       configApplicationJson
     );
-    console.log(res.data);
+    // console.log(res.data);
+    dispatch({ type: "AsynchronousSuccess" });
+    dispatch({
+      type: "DispalyNotifier",
+      payload: { type: "success", msg: "Item Added" },
+    });
   } catch (err) {
     console.log(err.response.data.errors);
   }

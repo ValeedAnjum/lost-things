@@ -112,6 +112,7 @@ const UploadItems = (props) => {
     console.log(CopyVal);
     // upload_image(CopyVal);
     item_upload(CopyVal);
+    setopenDrawerUpload();
   };
   const addDetail = () => {
     const detailsCopy = [...details];

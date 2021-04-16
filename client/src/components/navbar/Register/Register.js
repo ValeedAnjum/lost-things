@@ -57,6 +57,7 @@ const Register = (props) => {
   const classes = useStyles();
   const submitVal = (val) => {
     register_user(val);
+    setopenDrawerRegister();
   };
   return (
     <Container maxWidth="xl" component="main">

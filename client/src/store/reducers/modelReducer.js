@@ -1,9 +1,12 @@
 const iniState = {
   modelName: null,
+  errorMessage: null,
+  notifierMessage: null,
+  notifierType: null,
 };
 
 export const modelReducer = (state = iniState, action) => {
-  const { type } = action;
+  const { type, payload } = action;
   switch (type) {
     case "SingInModelOpen":
       return { ...state, modelName: "SingInModel" };
@@ -13,6 +16,15 @@ export const modelReducer = (state = iniState, action) => {
       return { ...state, modelName: "AsynchronousStart" };
     case "AsynchronousSuccess":
       return { ...state, modelName: null };
+    case "AsynchronousError":
+      return { ...state, modelName: null, errorMessage: payload };
+    case "DispalyNotifier":
+      return {
+        ...state,
+        modelName: "DispalyNotifier",
+        notifierMessage: payload.msg,
+        notifierType: payload.type,
+      };
     default:
       return { ...state };
   }

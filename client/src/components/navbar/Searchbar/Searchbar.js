@@ -23,7 +23,9 @@ const Searchbar = (props) => {
     setAddress(value);
     SearchItems(null, latLan);
   };
-
+  useEffect(() => {
+    document.getElementsByClassName("location-search-input")[0].value = "";
+  }, [location.pathname]);
   return (
     <Fragment>
       <Grid container direction="column">
