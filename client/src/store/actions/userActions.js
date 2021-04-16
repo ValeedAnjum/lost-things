@@ -42,7 +42,7 @@ export const uploadItem = (item) => async () => {
       body,
       configApplicationJson
     );
-    // console.log(res.data);
+    console.log(res.data);
   } catch (err) {
     console.log(err.response.data.errors);
   }

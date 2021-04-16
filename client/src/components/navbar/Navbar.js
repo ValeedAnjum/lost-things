@@ -72,24 +72,49 @@ const Navbar = (props) => {
               onClose={() => setmobileMenu(false)}
             >
               <List className={classes.list}>
-                <ListItem button>
-                  <ListItemText
-                    primary={"Sign In"}
-                    onClick={() => setopenDrawerLogin(true)}
-                  />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText
-                    primary={"Register"}
-                    onClick={() => setopenDrawerRegister(true)}
-                  />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText
-                    primary={"Post Item"}
-                    onClick={() => setopenDrawerUpload(true)}
-                  />
-                </ListItem>
+                {!auth ? (
+                  <Fragment>
+                    <ListItem
+                      button
+                      onClick={() => {
+                        setopenDrawerLogin(true);
+                        setmobileMenu(false);
+                      }}
+                    >
+                      <ListItemText primary={"SIGN IN"} />
+                    </ListItem>
+                    <ListItem
+                      button
+                      onClick={() => {
+                        setopenDrawerRegister(true);
+                        setmobileMenu(false);
+                      }}
+                    >
+                      <ListItemText primary={"REGISTER"} />
+                    </ListItem>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <ListItem
+                      button
+                      onClick={() => {
+                        setopenDrawerUpload(true);
+                        setmobileMenu(false);
+                      }}
+                    >
+                      <ListItemText primary={"POST ITEM"} />
+                    </ListItem>
+                    <ListItem
+                      button
+                      onClick={() => {
+                        logout();
+                        setmobileMenu(false);
+                      }}
+                    >
+                      <ListItemText primary={"LOGOUT"} />
+                    </ListItem>
+                  </Fragment>
+                )}
               </List>
             </Drawer>
           </Hidden>
@@ -100,10 +125,7 @@ const Navbar = (props) => {
               style={{ width: "150px", height: "150px" }}
             />
           </div>
-          <Hidden smDown>
-            <Button color="inherit" onClick={() => setopenDrawerUpload(true)}>
-              Post Lost Item
-            </Button>
+          <Hidden xsDown>
             {!auth ? (
               <Fragment>
                 <Button
@@ -121,6 +143,12 @@ const Navbar = (props) => {
               </Fragment>
             ) : (
               <Fragment>
+                <Button
+                  color="inherit"
+                  onClick={() => setopenDrawerUpload(true)}
+                >
+                  Post Lost Item
+                </Button>
                 <Button color="inherit" onClick={logout}>
                   Logout
                 </Button>

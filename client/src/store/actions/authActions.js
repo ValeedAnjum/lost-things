@@ -8,6 +8,7 @@ export const loadUser = () => async (dispatch) => {
       const res = await axios.get("auth/user");
       dispatch({ type: "SET_PROFILE", payload: res.data });
       dispatch({ type: "LOGIN_SUCCESS", payload: localStorage.token });
+      dispatch({ type: "AsynchronousSuccess" });
     }
   } catch (error) {
     console.log(error);
@@ -15,8 +16,6 @@ export const loadUser = () => async (dispatch) => {
 };
 
 export const signIn = ({ email, password }) => async (dispatch) => {
-  console.log(email);
-  console.log(password);
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -25,6 +24,7 @@ export const signIn = ({ email, password }) => async (dispatch) => {
 
   const body = JSON.stringify({ email, password });
   try {
+    dispatch({ type: "AsynchronousStart" });
     const res = await axios.post(`/auth/signin`, body, config);
     dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
     dispatch(loadUser());

@@ -5,8 +5,8 @@ import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
-import Wallet from "../../Assets/Images/wallet.jpg";
 import { fetchProductDetails } from "../../store/actions/userActions";
+
 const Details = (props) => {
   const {
     FetchProductDetails,
@@ -26,7 +26,7 @@ const Details = (props) => {
   return (
     <Fragment>
       {itemInfo && (
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid item xs={12} sm={6}>
             <img
               src={`http://localhost:5000/${itemInfo.img}`}

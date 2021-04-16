@@ -56,6 +56,7 @@ const Signin = (props) => {
   const classes = useStyles();
   const submitVal = (val) => {
     signin_user(val);
+    openDrawerLogin();
   };
   return (
     <Container maxWidth="xl" component="main">
@@ -124,7 +125,6 @@ const Signin = (props) => {
 };
 
 const mapState = (state) => {
-  console.log(state);
   return {};
 };
 

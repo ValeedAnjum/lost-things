@@ -140,7 +140,6 @@ const Register = (props) => {
 };
 
 const mapState = (state) => {
-  console.log(state);
   return {};
 };
 

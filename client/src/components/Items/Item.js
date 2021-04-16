@@ -9,7 +9,6 @@ const useStyles = makeStyles(() => {
       width: "100%",
       height: "300px",
       cursor: "pointer",
-
       "&:hover": {
         "& $overlay": {
           opacity: "1",

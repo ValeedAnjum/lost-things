@@ -19,7 +19,7 @@ import { combineValidators, isRequired } from "revalidate";
 import { reduxForm, Field } from "redux-form";
 
 import TextInput from "../../Form/TextInput";
-import { uploadImage, uploadItem } from "../../../store/actions/userActions";
+import { uploadItem } from "../../../store/actions/userActions";
 import Searchlocation from "./Searchlocation/Searchlocation";
 import Datepicker from "./Datepicker";
 
@@ -82,12 +82,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 const UploadItems = (props) => {
-  const {
-    setopenDrawerUpload,
-    handleSubmit,
-    item_upload,
-    upload_image,
-  } = props;
+  const { setopenDrawerUpload, handleSubmit, item_upload } = props;
   const [details, setdetails] = useState([]);
   const [coordinates, setCoordinates] = useState(null);
   const [file, setfile] = useState(null);
@@ -106,7 +101,7 @@ const UploadItems = (props) => {
     const detailDescriptions = [];
     details.forEach((id) => {
       const detailValue = document.getElementById(id).value.trim();
-      if (detailValue != "") {
+      if (detailValue !== "") {
         detailDescriptions.push(document.getElementById(id).value);
       }
     });
@@ -116,7 +111,7 @@ const UploadItems = (props) => {
 
     console.log(CopyVal);
     // upload_image(CopyVal);
-    // item_upload(CopyVal);
+    item_upload(CopyVal);
   };
   const addDetail = () => {
     const detailsCopy = [...details];
@@ -125,9 +120,7 @@ const UploadItems = (props) => {
       : detailsCopy.push(details[details.length - 1] + 1);
     setdetails(detailsCopy);
   };
-  const getCurrentPosition = () => {
-    console.log("get");
-  };
+
   const fileChangeHandler = (event) => {
     // const demoImage = document.querySelector("img");
     let fileInput = false;
@@ -298,7 +291,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     item_upload: (data) => dispatch(uploadItem(data)),
-    upload_image: (image) => dispatch(uploadImage(image)),
   };
 };
 
