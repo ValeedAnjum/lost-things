@@ -1,7 +1,20 @@
-import { Avatar, Grid, makeStyles } from "@material-ui/core";
+import {
+  Avatar,
+  Grid,
+  Icon,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+
 import React, { useEffect } from "react";
 
-const useStyle = makeStyles(() => {
+const useStyle = makeStyles((theme) => {
   return {
     appContainer: {
       position: "absolute",
@@ -19,6 +32,19 @@ const useStyle = makeStyles(() => {
     userMessages: {
       height: "100vh",
       border: "1px solid black",
+    },
+    list: {
+      width: "100%",
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+      padding: 0,
+      overflow: "auto",
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "#d4d4d4",
+      },
     },
   };
 });
@@ -42,26 +68,42 @@ const Chatapp = () => {
           alignItems="flex-start"
         >
           {/* a single user  */}
-          <Grid item container>
-            <Grid item md={2}>
-              <Avatar>H</Avatar>
-            </Grid>
-            <Grid container direction="column" item md={10}>
-              <Grid item container>
-                <Grid item>user name</Grid>
-                <Grid item> time</Grid>
-              </Grid>
-              <Grid item>last message</Grid>
-            </Grid>
-          </Grid>
+          <List className={classes.list}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => {
+              return (
+                <ListItem button key={index}>
+                  <ListItemAvatar>
+                    <Avatar>H</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Valeed Anjum"
+                    secondary={`I am message ${index}`}
+                  />
+                </ListItem>
+              );
+            })}
+          </List>
           {/* a single user  */}
         </Grid>
         {/* chat users  */}
-        {/* messages  */}
+        {/* chat content area  */}
         <Grid item md={9} className={classes.userMessages}>
-          <h1>messages</h1>
+          {/* user info and delete chat button  */}
+          <Grid container justify="space-between" alignItems="center">
+            <Grid item>
+              <Typography variant="h4" button>
+                Valeed Anjum
+              </Typography>
+            </Grid>
+            <Grid item>
+              <IconButton>
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+          {/* user info and delete chat button  */}
         </Grid>
-        {/* messages  */}
+        {/* chat content area  */}
       </Grid>
     </div>
   );
