@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import Chatapp from "./ChatApp/Chatapp";
 import Loader from "./Loader/Loader";
 import Notifier from "./Notifier/Notifier";
 const ModelManager = ({ ModelName, NotifierMessage, NotifierType }) => {
@@ -9,7 +10,7 @@ const ModelManager = ({ ModelName, NotifierMessage, NotifierType }) => {
     case "DispalyNotifier":
       return <Notifier message={NotifierMessage} type={NotifierType} />;
     default:
-      return null;
+      return <Chatapp />;
   }
 };
 const mapState = (state) => {
