@@ -1,8 +1,10 @@
 import {
   Avatar,
+  Button,
   Grid,
   Icon,
   IconButton,
+  Input,
   List,
   ListItem,
   ListItemAvatar,
@@ -11,6 +13,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import AttachFileIcon from "@material-ui/icons/AttachFile";
 
 import React, { useEffect } from "react";
 
@@ -27,17 +30,33 @@ const useStyle = makeStyles((theme) => {
     },
     users: {
       height: "100vh",
-      border: "1px solid blue",
+      // border: "1px solid blue",
     },
     userMessages: {
       height: "100vh",
-      border: "1px solid black",
+      // border: "1px solid black",
     },
     list: {
       width: "100%",
-      maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
       padding: 0,
+      overflow: "auto",
+      borderRight: "1px solid #dfcccc",
+      "&::-webkit-scrollbar": {
+        width: "0.5em",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "#d4d4d4",
+      },
+    },
+    userInfo: {
+      padding: "5px",
+      borderBottom: "1px solid #dfcccc",
+    },
+    messagesArea: {
+      height: "75vh",
+      padding: "5px",
+      flexWrap: "nowrap",
       overflow: "auto",
       "&::-webkit-scrollbar": {
         width: "0.5em",
@@ -46,6 +65,52 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "#d4d4d4",
       },
     },
+    messageTypingArea: {
+      borderTop: " 1px solid #dfcccc",
+    },
+    messageTypingInnerArea: {
+      margin: "15px 0",
+    },
+    userMessageContainer: {
+      marginBottom: "5px",
+    },
+    userMessage: {
+      backgroundColor: "#ccccc0",
+      margin: "0",
+      padding: "5px 5px",
+      borderRadius: "8px 8px 8px 0px",
+      marginLeft: "5px",
+      maxWidth: "500px",
+    },
+    currentUserMessageContainer: {
+      marginBottom: "5px",
+    },
+    currentUserMessage: {
+      backgroundColor: "#ccccc0",
+      margin: "0",
+      padding: "5px 5px",
+      borderRadius: "8px 8px 0px 8px",
+      maxWidth: "500px",
+      marginRight: "5px",
+    },
+    messageTypingInput: {
+      outline: "none",
+      border: "1px solid #bcb8b8",
+      width: "100%",
+      resize: "none",
+      height: "87%",
+      // "&::-webkit-scrollbar": {
+      //   width: "0.5em",
+      // },
+      // "&::-webkit-scrollbar-thumb": {
+      //   backgroundColor: "#d4d4d4",
+      // },
+    },
+    messgaeSendButton: {
+      outline: "none",
+      border: "1px solid #bcb8b8",
+      height: "100%",
+    },
   };
 });
 const Chatapp = () => {
@@ -53,6 +118,7 @@ const Chatapp = () => {
   useEffect(() => {
     const body = document.getElementsByTagName("body")[0];
     body.style.overflow = "hidden";
+    console.log("c");
   }, []);
   return (
     <div className={classes.appContainer}>
@@ -60,7 +126,7 @@ const Chatapp = () => {
         {/* chat users  */}
         <Grid
           item
-          md={3}
+          md={2}
           className={classes.users}
           container
           direction="column"
@@ -87,13 +153,16 @@ const Chatapp = () => {
         </Grid>
         {/* chat users  */}
         {/* chat content area  */}
-        <Grid item md={9} className={classes.userMessages}>
+        <Grid item md={10} className={classes.userMessages}>
           {/* user info and delete chat button  */}
-          <Grid container justify="space-between" alignItems="center">
+          <Grid
+            container
+            justify="space-between"
+            alignItems="center"
+            className={classes.userInfo}
+          >
             <Grid item>
-              <Typography variant="h4" button>
-                Valeed Anjum
-              </Typography>
+              <Typography variant="h4">Valeed Anjum</Typography>
             </Grid>
             <Grid item>
               <IconButton>
@@ -102,6 +171,58 @@ const Chatapp = () => {
             </Grid>
           </Grid>
           {/* user info and delete chat button  */}
+          {/* messages conatiner  */}
+          <Grid className={classes.messagesArea}>
+            {/* user message  */}
+            <Grid item container className={classes.userMessageContainer}>
+              <Grid item>
+                <Avatar>U</Avatar>
+              </Grid>
+              <Grid item>
+                <p className={classes.userMessage}>
+                  hello how are you i am a user message what about you hello how
+                </p>
+              </Grid>
+            </Grid>
+            {/* user message  */}
+            {/* current user message  */}
+            <Grid
+              item
+              container
+              justify="flex-end"
+              className={classes.currentUserMessageContainer}
+            >
+              <p className={classes.currentUserMessage}>
+                hey i am fine i am a message from where i dont know
+              </p>
+            </Grid>
+            {/* current user message  */}
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            className={classes.messageTypingArea}
+          >
+            <Grid
+              item
+              container
+              justify="center"
+              alignItems="stretch"
+              className={classes.messageTypingInnerArea}
+            >
+              <Grid item container justify="center" md={1}>
+                <IconButton>
+                  <AttachFileIcon />
+                </IconButton>
+              </Grid>
+              <Grid item md={10}>
+                <textarea className={classes.messageTypingInput}></textarea>
+              </Grid>
+              <Grid item md={1}>
+                <button className={classes.messgaeSendButton}>SEND</button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
         {/* chat content area  */}
       </Grid>
