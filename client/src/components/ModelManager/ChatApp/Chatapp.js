@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Grid,
+  Hidden,
   Icon,
   IconButton,
   Input,
@@ -52,6 +53,7 @@ const useStyle = makeStyles((theme) => {
     userInfo: {
       padding: "5px",
       borderBottom: "1px solid #dfcccc",
+      userSelect: "none",
     },
     messagesArea: {
       height: "75vh",
@@ -110,6 +112,7 @@ const useStyle = makeStyles((theme) => {
       outline: "none",
       border: "1px solid #bcb8b8",
       height: "100%",
+      cursor: "pointer",
     },
   };
 });
@@ -123,37 +126,39 @@ const Chatapp = () => {
   return (
     <div className={classes.appContainer}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
-        {/* chat users  */}
-        <Grid
-          item
-          md={2}
-          className={classes.users}
-          container
-          direction="column"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          {/* a single user  */}
-          <List className={classes.list}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => {
-              return (
-                <ListItem button key={index}>
-                  <ListItemAvatar>
-                    <Avatar>H</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Valeed Anjum"
-                    secondary={`I am message ${index}`}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-          {/* a single user  */}
-        </Grid>
+        <Hidden smDown>
+          {/* chat users  */}
+          <Grid
+            item
+            sm={2}
+            className={classes.users}
+            container
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
+            {/* a single user  */}
+            <List className={classes.list}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => {
+                return (
+                  <ListItem button key={index}>
+                    <ListItemAvatar>
+                      <Avatar>H</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary="Valeed Anjum"
+                      secondary={`I am message ${index}`}
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+            {/* a single user  */}
+          </Grid>
+        </Hidden>
         {/* chat users  */}
         {/* chat content area  */}
-        <Grid item md={10} className={classes.userMessages}>
+        <Grid item sm={10} xs={12} className={classes.userMessages}>
           {/* user info and delete chat button  */}
           <Grid
             container
@@ -210,15 +215,15 @@ const Chatapp = () => {
               alignItems="stretch"
               className={classes.messageTypingInnerArea}
             >
-              <Grid item container justify="center" md={1}>
+              <Grid item container justify="center" xs={1}>
                 <IconButton>
                   <AttachFileIcon />
                 </IconButton>
               </Grid>
-              <Grid item md={10}>
+              <Grid item xs={10}>
                 <textarea className={classes.messageTypingInput}></textarea>
               </Grid>
-              <Grid item md={1}>
+              <Grid item xs={1}>
                 <button className={classes.messgaeSendButton}>SEND</button>
               </Grid>
             </Grid>
