@@ -121,6 +121,7 @@ const useStyle = makeStyles((theme) => {
 });
 const Chatapp = (props) => {
   const [itemFinderUser, setItemFinderUser] = useState(null);
+  const [messages, setMessages] = useState(null);
   const classes = useStyle();
   const { ClearAllModels, itemFinderId, currentUserId } = props;
   useEffect(() => {
@@ -131,6 +132,11 @@ const Chatapp = (props) => {
       textArea.focus();
       (async function () {
         const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
+        const messages = await axios.get(
+          `/auth/chat/${itemFinderId}/${currentUserId}`
+        );
+        // console.log(messages.data);
+        setMessages(messages.data);
         setItemFinderUser(res.data);
       })();
     }
@@ -197,7 +203,11 @@ const Chatapp = (props) => {
           {/* messages conatiner  */}
           <Grid className={classes.messagesArea}>
             {/* user message  */}
-            <Message classes={classes} />
+            {messages
+              ? messages.map((msg) => {
+                  return <Message msg={msg} classes={classes} key={msg._id} />;
+                })
+              : "Loading..."}
 
             {/* user message  */}
             {/* current user message  */}

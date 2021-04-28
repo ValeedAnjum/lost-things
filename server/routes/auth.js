@@ -145,7 +145,7 @@ router.post("/chat/:receiverid", auth, async (req, res) => {
       message: message,
       type: type,
       senderId,
-      receiverId: receiverid.slice(0, receiverid.length - 1),
+      receiverId: receiverid.trim(),
     });
     const result = await chat.save();
     res.json(result);
@@ -161,9 +161,13 @@ router.post("/chat/:receiverid", auth, async (req, res) => {
 router.get("/chat/:receiverid/:senderid", auth, async (req, res) => {
   const { receiverid, senderid } = req.params;
   try {
+    // const result = await Chat.find({
+    //   senderId: { $eq: senderid },
+    //   receiverId: { $eq: receiverid },
+    // });
     const result = await Chat.find({
-      senderId: { $eq: senderid },
-      receiverId: { $eq: receiverid },
+      $or: [{ senderId: { $eq: senderid } }, { senderId: { $eq: receiverid } }],
+      // $or: [{ receiverId: { $eq: receiverid }, receiverId: { $eq: senderid } }],
     });
     res.json(result);
   } catch (error) {
