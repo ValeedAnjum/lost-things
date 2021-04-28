@@ -3,6 +3,7 @@ const iniState = {
   errorMessage: null,
   notifierMessage: null,
   notifierType: null,
+  itemFinderId: null,
 };
 
 export const modelReducer = (state = iniState, action) => {
@@ -24,6 +25,23 @@ export const modelReducer = (state = iniState, action) => {
         modelName: "DispalyNotifier",
         notifierMessage: payload.msg,
         notifierType: payload.type,
+      };
+    case "ClearDispalyNotifierData":
+      return {
+        ...state,
+        modelName: null,
+        notifierMessage: null,
+        notifierType: null,
+      };
+    case "OpenChatApp":
+      return { ...state, modelName: "OpenChatApp", itemFinderId: payload.id };
+    case "ClearAllModels":
+      return {
+        ...state,
+        modelName: null,
+        errorMessage: null,
+        notifierMessage: null,
+        notifierType: null,
       };
     default:
       return { ...state };

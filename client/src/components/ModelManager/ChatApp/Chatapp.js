@@ -15,13 +15,16 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
-
-import React, { useEffect } from "react";
+import ClearIcon from "@material-ui/icons/Clear";
+import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import Message from "./Message";
+import axios from "axios";
 
 const useStyle = makeStyles((theme) => {
   return {
     appContainer: {
-      position: "absolute",
+      position: "fixed",
       width: "100%",
       height: "100vh",
       backgroundColor: "white",
@@ -31,6 +34,7 @@ const useStyle = makeStyles((theme) => {
     },
     users: {
       height: "100vh",
+      borderRight: "1px solid #dfcccc",
       // border: "1px solid blue",
     },
     userMessages: {
@@ -42,7 +46,6 @@ const useStyle = makeStyles((theme) => {
       backgroundColor: theme.palette.background.paper,
       padding: 0,
       overflow: "auto",
-      borderRight: "1px solid #dfcccc",
       "&::-webkit-scrollbar": {
         width: "0.5em",
       },
@@ -116,12 +119,25 @@ const useStyle = makeStyles((theme) => {
     },
   };
 });
-const Chatapp = () => {
+const Chatapp = (props) => {
+  const [itemFinderUser, setItemFinderUser] = useState(null);
   const classes = useStyle();
+  const { ClearAllModels, itemFinderId } = props;
   useEffect(() => {
     const body = document.getElementsByTagName("body")[0];
     body.style.overflow = "hidden";
-    console.log("c");
+    if (itemFinderId) {
+      const textArea = document.getElementById("textArea");
+      textArea.focus();
+      (async function () {
+        const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
+        console.log(res.data);
+        setItemFinderUser(res.data);
+      })();
+    }
+    return () => {
+      body.style.overflow = "auto";
+    };
   }, []);
   return (
     <div className={classes.appContainer}>
@@ -139,19 +155,17 @@ const Chatapp = () => {
           >
             {/* a single user  */}
             <List className={classes.list}>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((index) => {
-                return (
-                  <ListItem button key={index}>
-                    <ListItemAvatar>
-                      <Avatar>H</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="Valeed Anjum"
-                      secondary={`I am message ${index}`}
-                    />
-                  </ListItem>
-                );
-              })}
+              {itemFinderUser && (
+                <ListItem button>
+                  <ListItemAvatar>
+                    <Avatar>{itemFinderUser.name.charAt(0)}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={itemFinderUser.name}
+                    secondary={`I am message `}
+                  />
+                </ListItem>
+              )}
             </List>
             {/* a single user  */}
           </Grid>
@@ -167,9 +181,14 @@ const Chatapp = () => {
             className={classes.userInfo}
           >
             <Grid item>
-              <Typography variant="h4">Valeed Anjum</Typography>
+              <Typography variant="h4">
+                {itemFinderUser ? itemFinderUser.name : "Loading"}
+              </Typography>
             </Grid>
             <Grid item>
+              <IconButton onClick={ClearAllModels}>
+                <ClearIcon />
+              </IconButton>
               <IconButton>
                 <DeleteIcon />
               </IconButton>
@@ -179,19 +198,11 @@ const Chatapp = () => {
           {/* messages conatiner  */}
           <Grid className={classes.messagesArea}>
             {/* user message  */}
-            <Grid item container className={classes.userMessageContainer}>
-              <Grid item>
-                <Avatar>U</Avatar>
-              </Grid>
-              <Grid item>
-                <p className={classes.userMessage}>
-                  hello how are you i am a user message what about you hello how
-                </p>
-              </Grid>
-            </Grid>
+            <Message classes={classes} />
+
             {/* user message  */}
             {/* current user message  */}
-            <Grid
+            {/* <Grid
               item
               container
               justify="flex-end"
@@ -200,7 +211,7 @@ const Chatapp = () => {
               <p className={classes.currentUserMessage}>
                 hey i am fine i am a message from where i dont know
               </p>
-            </Grid>
+            </Grid> */}
             {/* current user message  */}
           </Grid>
           <Grid
@@ -221,7 +232,10 @@ const Chatapp = () => {
                 </IconButton>
               </Grid>
               <Grid item xs={10}>
-                <textarea className={classes.messageTypingInput}></textarea>
+                <textarea
+                  className={classes.messageTypingInput}
+                  id="textArea"
+                ></textarea>
               </Grid>
               <Grid item xs={1}>
                 <button className={classes.messgaeSendButton}>SEND</button>
@@ -235,4 +249,14 @@ const Chatapp = () => {
   );
 };
 
-export default Chatapp;
+const mapState = (state) => {
+  return {
+    itemFinderId: state.model.itemFinderId,
+  };
+};
+const mapDispatch = (dispatch) => {
+  return {
+    ClearAllModels: () => dispatch({ type: "ClearAllModels" }),
+  };
+};
+export default connect(mapState, mapDispatch)(Chatapp);

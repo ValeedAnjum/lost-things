@@ -5,7 +5,7 @@ export const loadUser = () => async (dispatch) => {
   try {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
-      const res = await axios.get("auth/user");
+      const res = await axios.get("/auth/user");
       dispatch({ type: "SET_PROFILE", payload: res.data });
       dispatch({ type: "LOGIN_SUCCESS", payload: localStorage.token });
       dispatch({ type: "AsynchronousSuccess" });

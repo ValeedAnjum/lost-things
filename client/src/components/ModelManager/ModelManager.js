@@ -9,8 +9,10 @@ const ModelManager = ({ ModelName, NotifierMessage, NotifierType }) => {
       return <Loader />;
     case "DispalyNotifier":
       return <Notifier message={NotifierMessage} type={NotifierType} />;
-    default:
+    case "OpenChatApp":
       return <Chatapp />;
+    default:
+      return null;
   }
 };
 const mapState = (state) => {

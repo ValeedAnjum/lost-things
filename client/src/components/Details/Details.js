@@ -12,6 +12,10 @@ const Details = (props) => {
     FetchProductDetails,
     AsynchronousStartModel,
     AsynchronousSuccessModel,
+    DispalyNotifierModel,
+    auth,
+    ClearDispalyNotifierData,
+    OpenChatAppModel,
   } = props;
   const [itemInfo, setItemInfo] = useState(null);
   useEffect(() => {
@@ -23,6 +27,14 @@ const Details = (props) => {
     })();
     document.getElementsByClassName("location-search-input")[0].value = "";
   }, []);
+  const contactHandler = () => {
+    if (!auth) {
+      DispalyNotifierModel();
+      setTimeout(() => ClearDispalyNotifierData(), 2000);
+      return;
+    }
+    OpenChatAppModel(itemInfo.finderId);
+  };
   return (
     <Fragment>
       {itemInfo && (
@@ -48,7 +60,7 @@ const Details = (props) => {
               </ul>
             </div>
             <div>
-              <Button variant="text" color="default">
+              <Button variant="text" color="default" onClick={contactHandler}>
                 Contact Finder
               </Button>
             </div>
@@ -64,7 +76,21 @@ const mapDispatch = (dispatch) => {
     FetchProductDetails: (id) => dispatch(fetchProductDetails(id)),
     AsynchronousStartModel: () => dispatch({ type: "AsynchronousStart" }),
     AsynchronousSuccessModel: () => dispatch({ type: "AsynchronousSuccess" }),
+    DispalyNotifierModel: () =>
+      dispatch({
+        type: "DispalyNotifier",
+        payload: { msg: "Please first login", type: "info" },
+      }),
+    ClearDispalyNotifierData: () =>
+      dispatch({ type: "ClearDispalyNotifierData" }),
+    OpenChatAppModel: (id) =>
+      dispatch({ type: "OpenChatApp", payload: { id } }),
   };
 };
 
-export default compose(connect(null, mapDispatch))(withRouter(Details));
+const mapState = (state) => {
+  return {
+    auth: state.auth.auth,
+  };
+};
+export default compose(connect(mapState, mapDispatch))(withRouter(Details));

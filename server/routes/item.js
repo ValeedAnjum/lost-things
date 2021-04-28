@@ -129,4 +129,8 @@ router.post("/upload", (req, res) => {
   });
 });
 
+// @route    POST item/file_upload
+// @desc     Uploading a file it is a temp route
+// @access   Public
+
 module.exports = router;

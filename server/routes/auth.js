@@ -114,4 +114,18 @@ router.get("/user", auth, async (req, res) => {
   }
 });
 
+router.get("/userinfo/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      res.status(400).json({ error: [{ msg: "User deos not exists" }] });
+    }
+    res.json(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
