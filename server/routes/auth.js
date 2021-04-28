@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/user");
+const Chat = require("../models/chat");
 const auth = require("../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
@@ -114,18 +115,41 @@ router.get("/user", auth, async (req, res) => {
   }
 });
 
-router.get("/userinfo/:id", auth, async (req, res) => {
-  const { id } = req.params;
+// @route    POST auth/chat/:receiverid
+// @desc     save user chat
+// @access   Private
+router.post("/chat/:receiverid", auth, async (req, res) => {
+  const { receiverid } = req.params;
+  // const { receiverid } = req.query;
+  const senderId = req.user.id;
+  const { message, type } = req.body;
   try {
-    const user = await User.findById(id).select("-password");
-    if (!user) {
-      res.status(400).json({ error: [{ msg: "User deos not exists" }] });
-    }
-    res.json(user);
+    const chat = new Chat({
+      message: message,
+      type: type,
+      senderId,
+      receiverId: receiverid.slice(0, receiverid.length - 1),
+    });
+    const result = await chat.save();
+    res.json(result);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
   }
 });
 
+// @route    Get auth/chat/:receiverid/:senderid
+// @desc     get user chat
+// @access   Private
+router.get("/chat/:receiverid/:senderid", auth, async (req, res) => {
+  const { receiverid, senderid } = req.params;
+  console.log(receiverid);
+  console.log(senderid);
+  try {
+    res.send("get chat");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;
