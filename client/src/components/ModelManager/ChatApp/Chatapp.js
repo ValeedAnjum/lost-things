@@ -131,7 +131,6 @@ const Chatapp = (props) => {
       textArea.focus();
       (async function () {
         const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
-        console.log(res.data);
         setItemFinderUser(res.data);
       })();
     }

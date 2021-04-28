@@ -115,6 +115,23 @@ router.get("/user", auth, async (req, res) => {
   }
 });
 
+// @route    GET auth/userinfo/:id
+// @desc     get user info
+// @access   Private
+router.get("/userinfo/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      res.status(400).json({ error: [{ msg: "User deos not exists" }] });
+    }
+    res.json(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route    POST auth/chat/:receiverid
 // @desc     save user chat
 // @access   Private
@@ -143,10 +160,12 @@ router.post("/chat/:receiverid", auth, async (req, res) => {
 // @access   Private
 router.get("/chat/:receiverid/:senderid", auth, async (req, res) => {
   const { receiverid, senderid } = req.params;
-  console.log(receiverid);
-  console.log(senderid);
   try {
-    res.send("get chat");
+    const result = await Chat.find({
+      senderId: { $eq: senderid },
+      receiverId: { $eq: receiverid },
+    });
+    res.json(result);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
