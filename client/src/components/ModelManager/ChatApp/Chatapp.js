@@ -122,7 +122,7 @@ const useStyle = makeStyles((theme) => {
 const Chatapp = (props) => {
   const [itemFinderUser, setItemFinderUser] = useState(null);
   const classes = useStyle();
-  const { ClearAllModels, itemFinderId } = props;
+  const { ClearAllModels, itemFinderId, currentUserId } = props;
   useEffect(() => {
     const body = document.getElementsByTagName("body")[0];
     body.style.overflow = "hidden";
@@ -251,6 +251,7 @@ const Chatapp = (props) => {
 const mapState = (state) => {
   return {
     itemFinderId: state.model.itemFinderId,
+    currentUserId: state.auth.profile._id,
   };
 };
 const mapDispatch = (dispatch) => {
