@@ -122,6 +122,7 @@ const useStyle = makeStyles((theme) => {
 const Chatapp = (props) => {
   const [itemFinderUser, setItemFinderUser] = useState(null);
   const [messages, setMessages] = useState(null);
+  const [textAriaMessage, setTextAriaMessage] = useState("");
   const classes = useStyle();
   const { ClearAllModels, itemFinderId, currentUserId } = props;
   useEffect(() => {
@@ -146,6 +147,22 @@ const Chatapp = (props) => {
       body.style.overflow = "auto";
     };
   }, []);
+  const textareaMessageHandler = (event) => {
+    const newValue = event.target.value;
+    console.log(newValue);
+    if (newValue.charCodeAt(newValue.length - 1) === 10) {
+      return sendMessage();
+    }
+    setTextAriaMessage(event.target.value);
+  };
+  const sendMessage = async () => {
+    const textmessage = textAriaMessage.trim();
+    console.log(textAriaMessage);
+    if (textmessage) {
+      console.log("SEND", textmessage);
+      setTextAriaMessage("");
+    }
+  };
   return (
     <div className={classes.appContainer}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -246,10 +263,17 @@ const Chatapp = (props) => {
                 <textarea
                   className={classes.messageTypingInput}
                   id="textArea"
+                  onChange={textareaMessageHandler}
+                  value={textAriaMessage}
                 ></textarea>
               </Grid>
               <Grid item xs={1}>
-                <button className={classes.messgaeSendButton}>SEND</button>
+                <button
+                  className={classes.messgaeSendButton}
+                  onClick={sendMessage}
+                >
+                  SEND
+                </button>
               </Grid>
             </Grid>
           </Grid>
