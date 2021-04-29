@@ -161,13 +161,11 @@ router.post("/chat/:receiverid", auth, async (req, res) => {
 router.get("/chat/:receiverid/:senderid", auth, async (req, res) => {
   const { receiverid, senderid } = req.params;
   try {
-    // const result = await Chat.find({
-    //   senderId: { $eq: senderid },
-    //   receiverId: { $eq: receiverid },
-    // });
     const result = await Chat.find({
-      $or: [{ senderId: { $eq: senderid } }, { senderId: { $eq: receiverid } }],
-      // $or: [{ receiverId: { $eq: receiverid }, receiverId: { $eq: senderid } }],
+      $or: [
+        { $and: [{ senderId: senderid }, { receiverId: receiverid }] },
+        { $and: [{ senderId: receiverid }, { receiverId: senderid }] },
+      ],
     });
     res.json(result);
   } catch (error) {

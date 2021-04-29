@@ -130,6 +130,8 @@ const Chatapp = (props) => {
     if (itemFinderId) {
       const textArea = document.getElementById("textArea");
       textArea.focus();
+      console.log("IF_ID", itemFinderId);
+      console.log("CU_ID", currentUserId);
       (async function () {
         const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
         const messages = await axios.get(
