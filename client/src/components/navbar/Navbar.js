@@ -56,7 +56,7 @@ const Navbar = (props) => {
   const [openDrawerRegister, setopenDrawerRegister] = useState(false);
   const [openDrawerUpload, setopenDrawerUpload] = useState(false);
   const [mobileMenu, setmobileMenu] = useState(false);
-  const { auth, logout } = props;
+  const { auth, logout, OpenChatAppModel } = props;
   const { history } = props;
   const classes = useStyles();
   return (
@@ -149,6 +149,7 @@ const Navbar = (props) => {
                 >
                   Post Lost Item
                 </Button>
+
                 <Button color="inherit" onClick={logout}>
                   Logout
                 </Button>

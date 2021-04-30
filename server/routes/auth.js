@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const config = require("config");
 const User = require("../models/user");
 const Chat = require("../models/chat");
@@ -168,6 +169,45 @@ router.get("/chat/:receiverid/:senderid", auth, async (req, res) => {
       ],
     });
     res.json(result);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+// @route    Get auth/chatusers
+// @desc     get all chates user data
+// @access   Private
+
+router.get("/chatusers", auth, async (req, res) => {
+  const id = req.user.id;
+  console.log(id);
+  try {
+    const getIds = await Chat.find({
+      $or: [{ senderId: id }, { receiverId: id }],
+    }).select(["receiverId", "senderId"]);
+    const getOthersUsersIdes = getIds
+      .map((idsObj) => {
+        const objValues = Object.values(idsObj);
+        return Object.values(objValues[objValues.length - 2]).splice(1, 2);
+      })
+      .map((idValues) => {
+        const firstValueToStr = idValues[0].toString();
+        idValues[0] = firstValueToStr;
+        return idValues;
+      })
+      .map((values) => {
+        values.splice(values.indexOf(id), 1);
+        return values[0];
+      });
+    const getOthersUsersIdesWithoutDupli = getOthersUsersIdes.filter(
+      (val, index) => getOthersUsersIdes.indexOf(val) === index
+    );
+    let users = [];
+    getOthersUsersIdesWithoutDupli.forEach(async (userid) => {
+      const userProfile = await User.findById(userid);
+      console.log(userProfile);
+    });
+    res.json(getIds);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
