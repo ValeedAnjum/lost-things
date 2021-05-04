@@ -97,6 +97,7 @@ const useStyle = makeStyles((theme) => {
       borderRadius: "8px 8px 0px 8px",
       maxWidth: "500px",
       marginRight: "5px",
+      lineBreak: "anywhere",
     },
     messageTypingInput: {
       outline: "none",
@@ -121,6 +122,8 @@ const useStyle = makeStyles((theme) => {
 });
 const Chatapp = (props) => {
   const [itemFinderUser, setItemFinderUser] = useState(null);
+  const [chatUsers, setChatUsers] = useState([]);
+  const [loadedChatInfo, setLoadedChatInfo] = useState(null);
   const [messages, setMessages] = useState(null);
   const [textAriaMessage, setTextAriaMessage] = useState("");
   const classes = useStyle();
@@ -138,7 +141,18 @@ const Chatapp = (props) => {
         const messages = await axios.get(
           `/auth/chat/${itemFinderId}/${currentUserId}`
         );
-        // console.log(messages.data);
+        const chatUsersIds = await axios.get("/auth/chatusers");
+        const chatUserProfiles = [];
+        for (let i = 0; i < chatUsersIds.data.length; i++) {
+          if (itemFinderId !== chatUsersIds.data[i]) {
+            const chatUserProfileRes = await axios.get(
+              `/auth/userinfo/${chatUsersIds.data[i]}`
+            );
+            chatUserProfiles.push(chatUserProfileRes.data);
+          }
+        }
+        setLoadedChatInfo({ id: itemFinderId, name: res.data.name });
+        setChatUsers(chatUserProfiles);
         setMessages(messages.data);
         setItemFinderUser(res.data);
       })();
@@ -149,7 +163,6 @@ const Chatapp = (props) => {
   }, []);
   const textareaMessageHandler = (event) => {
     const newValue = event.target.value;
-    console.log(newValue);
     if (newValue.charCodeAt(newValue.length - 1) === 10) {
       return sendMessage();
     }
@@ -157,10 +170,32 @@ const Chatapp = (props) => {
   };
   const sendMessage = async () => {
     const textmessage = textAriaMessage.trim();
-    console.log(textAriaMessage);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
     if (textmessage) {
-      console.log("SEND", textmessage);
-      setTextAriaMessage("");
+      try {
+        const body = JSON.stringify({ message: textmessage, type: "Text" });
+        const msg = await axios.post(
+          `/auth/chat/${loadedChatInfo.id}`,
+          body,
+          config
+        );
+        setMessages((msgs) => [...msgs, msg.data]);
+        setTextAriaMessage("");
+      } catch (err) {
+        console.log(err.response.data.errors[0].msg);
+      }
+    }
+  };
+  const selecteUserChat = async (id, name) => {
+    if (id !== loadedChatInfo.id) {
+      const messages = await axios.get(`/auth/chat/${id}/${currentUserId}`);
+      console.log(id);
+      setLoadedChatInfo({ id: id, name: name });
+      setMessages(messages.data);
     }
   };
   return (
@@ -180,16 +215,32 @@ const Chatapp = (props) => {
             {/* a single user  */}
             <List className={classes.list}>
               {itemFinderUser && (
-                <ListItem button>
+                <ListItem
+                  button
+                  onClick={() =>
+                    selecteUserChat(itemFinderUser._id, itemFinderUser.name)
+                  }
+                >
                   <ListItemAvatar>
                     <Avatar>{itemFinderUser.name.charAt(0)}</Avatar>
                   </ListItemAvatar>
-                  <ListItemText
-                    primary={itemFinderUser.name}
-                    secondary={`I am message `}
-                  />
+                  <ListItemText primary={itemFinderUser.name} />
                 </ListItem>
               )}
+              {/* chat users  */}
+              {chatUsers.length > 0 &&
+                chatUsers.map((user) => (
+                  <ListItem
+                    button
+                    onClick={() => selecteUserChat(user._id, user.name)}
+                    key={user._id}
+                  >
+                    <ListItemAvatar>
+                      <Avatar>{user.name.charAt(0)}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={user.name} />
+                  </ListItem>
+                ))}
             </List>
             {/* a single user  */}
           </Grid>
@@ -206,15 +257,12 @@ const Chatapp = (props) => {
           >
             <Grid item>
               <Typography variant="h4">
-                {itemFinderUser ? itemFinderUser.name : "Loading"}
+                {loadedChatInfo ? loadedChatInfo.name : "Loading"}
               </Typography>
             </Grid>
             <Grid item>
               <IconButton onClick={ClearAllModels}>
                 <ClearIcon />
-              </IconButton>
-              <IconButton>
-                <DeleteIcon />
               </IconButton>
             </Grid>
           </Grid>
@@ -227,20 +275,6 @@ const Chatapp = (props) => {
                   return <Message msg={msg} classes={classes} key={msg._id} />;
                 })
               : "Loading..."}
-
-            {/* user message  */}
-            {/* current user message  */}
-            {/* <Grid
-              item
-              container
-              justify="flex-end"
-              className={classes.currentUserMessageContainer}
-            >
-              <p className={classes.currentUserMessage}>
-                hey i am fine i am a message from where i dont know
-              </p>
-            </Grid> */}
-            {/* current user message  */}
           </Grid>
           <Grid
             container
