@@ -16,6 +16,7 @@ const Details = (props) => {
     auth,
     ClearDispalyNotifierData,
     OpenChatAppModel,
+    currentUserId,
   } = props;
   const [itemInfo, setItemInfo] = useState(null);
   useEffect(() => {
@@ -23,6 +24,7 @@ const Details = (props) => {
       AsynchronousStartModel();
       const res = await FetchProductDetails(props.match.params.id);
       AsynchronousSuccessModel();
+      console.log(res.finderId);
       setItemInfo(res);
     })();
     document.getElementsByClassName("location-search-input")[0].value = "";
@@ -60,9 +62,17 @@ const Details = (props) => {
               </ul>
             </div>
             <div>
-              <Button variant="text" color="default" onClick={contactHandler}>
-                Contact Finder
-              </Button>
+              {currentUserId &&
+              currentUserId.profile &&
+              itemInfo.finderId !== currentUserId.profile._id ? (
+                <Button variant="text" color="default" onClick={contactHandler}>
+                  Contact Finder
+                </Button>
+              ) : (
+                <Button variant="text" color="default" onClick={contactHandler}>
+                  View Claims
+                </Button>
+              )}
             </div>
           </Grid>
         </Grid>
@@ -91,6 +101,7 @@ const mapDispatch = (dispatch) => {
 const mapState = (state) => {
   return {
     auth: state.auth.auth,
+    currentUserId: state.auth,
   };
 };
 export default compose(connect(mapState, mapDispatch))(withRouter(Details));
