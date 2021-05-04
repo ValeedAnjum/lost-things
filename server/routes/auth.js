@@ -180,7 +180,6 @@ router.get("/chat/:receiverid/:senderid", auth, async (req, res) => {
 
 router.get("/chatusers", auth, async (req, res) => {
   const id = req.user.id;
-  console.log(id);
   try {
     const getIds = await Chat.find({
       $or: [{ senderId: id }, { receiverId: id }],
@@ -202,12 +201,7 @@ router.get("/chatusers", auth, async (req, res) => {
     const getOthersUsersIdesWithoutDupli = getOthersUsersIdes.filter(
       (val, index) => getOthersUsersIdes.indexOf(val) === index
     );
-    let users = [];
-    getOthersUsersIdesWithoutDupli.forEach(async (userid) => {
-      const userProfile = await User.findById(userid);
-      console.log(userProfile);
-    });
-    res.json(getIds);
+    res.json(getOthersUsersIdesWithoutDupli);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
