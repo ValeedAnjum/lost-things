@@ -53,6 +53,15 @@ const useStyle = makeStyles((theme) => {
         backgroundColor: "#d4d4d4",
       },
     },
+    noConversations: {
+      textAlign: "center",
+      textTransform: "capitalize",
+      width: "100%",
+    },
+    messengerIsEmpty: {
+      textTransform: "capitalize",
+      textAlign: "center",
+    },
     userInfo: {
       padding: "5px",
       borderBottom: "1px solid #dfcccc",
@@ -127,6 +136,7 @@ const Chatapp = (props) => {
   const [loadedChatInfo, setLoadedChatInfo] = useState(null);
   const [messages, setMessages] = useState(null);
   const [textAriaMessage, setTextAriaMessage] = useState("");
+  const [noConversation, setnoConversation] = useState(false);
   const classes = useStyle();
   const { ClearAllModels, itemFinderId, currentUserId } = props;
   useEffect(() => {
@@ -138,24 +148,50 @@ const Chatapp = (props) => {
       console.log("IF_ID", itemFinderId);
       console.log("CU_ID", currentUserId);
       (async function () {
-        const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
-        const messages = await axios.get(
-          `/auth/chat/${itemFinderId}/${currentUserId}`
-        );
-        const chatUsersIds = await axios.get("/auth/chatusers");
-        const chatUserProfiles = [];
-        for (let i = 0; i < chatUsersIds.data.length; i++) {
-          if (itemFinderId !== chatUsersIds.data[i]) {
-            const chatUserProfileRes = await axios.get(
-              `/auth/userinfo/${chatUsersIds.data[i]}`
+        if (itemFinderId !== "messenger") {
+          const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
+          const messages = await axios.get(
+            `/auth/chat/${itemFinderId}/${currentUserId}`
+          );
+          const chatUsersIds = await axios.get("/auth/chatusers");
+          const chatUserProfiles = [];
+          for (let i = 0; i < chatUsersIds.data.length; i++) {
+            if (itemFinderId !== chatUsersIds.data[i]) {
+              const chatUserProfileRes = await axios.get(
+                `/auth/userinfo/${chatUsersIds.data[i]}`
+              );
+              chatUserProfiles.push(chatUserProfileRes.data);
+            }
+          }
+          setChatUsers(chatUserProfiles);
+          setLoadedChatInfo({ id: itemFinderId, name: res.data.name });
+          setMessages(messages.data);
+          setItemFinderUser(res.data);
+        } else {
+          const chatUsersIds = await axios.get("/auth/chatusers");
+          if (chatUsersIds.data.length > 0) {
+            const chatUserProfiles = [];
+            for (let i = 0; i < chatUsersIds.data.length; i++) {
+              if (itemFinderId !== chatUsersIds.data[i]) {
+                const chatUserProfileRes = await axios.get(
+                  `/auth/userinfo/${chatUsersIds.data[i]}`
+                );
+                chatUserProfiles.push(chatUserProfileRes.data);
+              }
+            }
+            const messages = await axios.get(
+              `/auth/chat/${chatUserProfiles[0]._id}/${currentUserId}`
             );
-            chatUserProfiles.push(chatUserProfileRes.data);
+            setChatUsers(chatUserProfiles);
+            setLoadedChatInfo({
+              id: chatUserProfiles[0]._id,
+              name: chatUserProfiles[0].name,
+            });
+            setMessages(messages.data);
+          } else {
+            setnoConversation(true);
           }
         }
-        setLoadedChatInfo({ id: itemFinderId, name: res.data.name });
-        setChatUsers(chatUserProfiles);
-        setMessages(messages.data);
-        setItemFinderUser(res.data);
       })();
     }
     return () => {
@@ -243,6 +279,9 @@ const Chatapp = (props) => {
                   </ListItem>
                 ))}
             </List>
+            {noConversation && (
+              <h4 className={classes.noConversations}>No Conversations</h4>
+            )}
             {/* a single user  */}
           </Grid>
         </Hidden>
@@ -258,7 +297,11 @@ const Chatapp = (props) => {
           >
             <Grid item>
               <Typography variant="h4">
-                {loadedChatInfo ? loadedChatInfo.name : "Loading"}
+                {loadedChatInfo
+                  ? loadedChatInfo.name
+                  : !noConversation
+                  ? "Loading"
+                  : null}
               </Typography>
             </Grid>
             <Grid item>
@@ -271,11 +314,17 @@ const Chatapp = (props) => {
           {/* messages conatiner  */}
           <Grid className={classes.messagesArea}>
             {/* user message  */}
-            {messages
-              ? messages.map((msg) => {
-                  return <Message msg={msg} classes={classes} key={msg._id} />;
-                })
-              : "Loading..."}
+            {messages ? (
+              messages.map((msg) => {
+                return <Message msg={msg} classes={classes} key={msg._id} />;
+              })
+            ) : !noConversation ? (
+              "Loading..."
+            ) : (
+              <p className={classes.messengerIsEmpty}>
+                Welcome To The Messenger
+              </p>
+            )}
           </Grid>
           <Grid
             container

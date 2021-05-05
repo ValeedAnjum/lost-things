@@ -63,16 +63,16 @@ const Details = (props) => {
             </div>
             <div>
               {currentUserId &&
-              currentUserId.profile &&
-              itemInfo.finderId !== currentUserId.profile._id ? (
-                <Button variant="text" color="default" onClick={contactHandler}>
-                  Contact Finder
-                </Button>
-              ) : (
-                <Button variant="text" color="default" onClick={contactHandler}>
-                  View Claims
-                </Button>
-              )}
+                currentUserId.profile &&
+                itemInfo.finderId !== currentUserId.profile._id && (
+                  <Button
+                    variant="text"
+                    color="default"
+                    onClick={contactHandler}
+                  >
+                    Contact Finder
+                  </Button>
+                )}
             </div>
           </Grid>
         </Grid>

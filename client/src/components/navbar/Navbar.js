@@ -56,9 +56,12 @@ const Navbar = (props) => {
   const [openDrawerRegister, setopenDrawerRegister] = useState(false);
   const [openDrawerUpload, setopenDrawerUpload] = useState(false);
   const [mobileMenu, setmobileMenu] = useState(false);
-  const { auth, logout, OpenChatAppModel } = props;
+  const { auth, logout, openChatAppModel } = props;
   const { history } = props;
   const classes = useStyles();
+  const openMessenger = () => {
+    openChatAppModel();
+  };
   return (
     <Fragment>
       <AppBar position="absolute" color="primary" className={classes.appbar}>
@@ -95,6 +98,9 @@ const Navbar = (props) => {
                   </Fragment>
                 ) : (
                   <Fragment>
+                    <ListItem button onClick={openMessenger}>
+                      <ListItemText primary={"MESSENGER"} />
+                    </ListItem>
                     <ListItem
                       button
                       onClick={() => {
@@ -143,6 +149,9 @@ const Navbar = (props) => {
               </Fragment>
             ) : (
               <Fragment>
+                <Button color="inherit" onClick={openMessenger}>
+                  Messenger
+                </Button>
                 <Button
                   color="inherit"
                   onClick={() => setopenDrawerUpload(true)}
@@ -201,6 +210,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     logout: () => dispatch({ type: "CLEAR_PROFILE" }),
+    openChatAppModel: () =>
+      dispatch({ type: "OpenChatApp", payload: { id: "messenger" } }),
   };
 };
 
