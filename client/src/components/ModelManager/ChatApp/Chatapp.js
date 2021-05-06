@@ -1,11 +1,8 @@
 import {
   Avatar,
-  Button,
   Grid,
   Hidden,
-  Icon,
   IconButton,
-  Input,
   List,
   ListItem,
   ListItemAvatar,
@@ -13,11 +10,11 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import ClearIcon from "@material-ui/icons/Clear";
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
+
 import Message from "./Message";
 import axios from "axios";
 
@@ -145,8 +142,8 @@ const Chatapp = (props) => {
     if (itemFinderId) {
       const textArea = document.getElementById("textArea");
       textArea.focus();
-      console.log("IF_ID", itemFinderId);
-      console.log("CU_ID", currentUserId);
+      // console.log("IF_ID", itemFinderId);
+      // console.log("CU_ID", currentUserId);
       (async function () {
         if (itemFinderId !== "messenger") {
           const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
@@ -349,6 +346,7 @@ const Chatapp = (props) => {
                   id="textArea"
                   onChange={textareaMessageHandler}
                   value={textAriaMessage}
+                  disabled={noConversation}
                 ></textarea>
               </Grid>
               <Grid item xs={1}>
