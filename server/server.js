@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const socketio = require("socket.io");
+const http = require("http");
 const connectDB = require("./config/db");
 connectDB();
 
@@ -16,6 +18,23 @@ app.get("/", (req, res) => res.send("API IS UP"));
 app.use("/auth", require("./routes/auth"));
 app.use("/item", require("./routes/item"));
 
+//socket.io
+//creating a  http server;
+const server = http.createServer(app);
+//socket.io instance
+const io = socketio(server);
+
+//on new connection and disconnection
+io.on("connection", (socket) => {
+  //   console.log("New User", socket.id);
+  socket.on("message", (data) => {
+    // socket.emit("message", data);
+    // console.log(socket.id);
+    io.to(socket.id).emit("message", `I am a message just for ${socket.id}`);
+    // socket.broadcast.emit("message", data);
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

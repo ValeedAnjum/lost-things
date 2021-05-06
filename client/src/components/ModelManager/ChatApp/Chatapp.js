@@ -14,10 +14,11 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import ClearIcon from "@material-ui/icons/Clear";
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-
+import io from "socket.io-client";
 import Message from "./Message";
 import axios from "axios";
 
+let socket;
 const useStyle = makeStyles((theme) => {
   return {
     appContainer: {
@@ -134,6 +135,8 @@ const Chatapp = (props) => {
   const [messages, setMessages] = useState(null);
   const [textAriaMessage, setTextAriaMessage] = useState("");
   const [noConversation, setnoConversation] = useState(false);
+  const ENDPOINT = "http://localhost:5000";
+
   const classes = useStyle();
   const { ClearAllModels, itemFinderId, currentUserId } = props;
   useEffect(() => {
@@ -232,8 +235,20 @@ const Chatapp = (props) => {
       setMessages(messages.data);
     }
   };
+  useEffect(() => {
+    socket = io.connect(ENDPOINT);
+    socket.on("message", (data) => {
+      console.log("My Id is", currentUserId);
+
+      console.log(data);
+    });
+  }, []);
+  const smsg = () => {
+    console.log("mess");
+    socket.emit("message", `Message from ${currentUserId}`);
+  };
   return (
-    <div className={classes.appContainer}>
+    <div className={classes.appContainer} onClick={smsg}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Hidden smDown>
           {/* chat users  */}

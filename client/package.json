@@ -28,7 +28,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-form": "^8.3.7",
     "redux-thunk": "^2.3.0",
-    "revalidate": "^1.2.0"
+    "revalidate": "^1.2.0",
+    "socket.io-client": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
