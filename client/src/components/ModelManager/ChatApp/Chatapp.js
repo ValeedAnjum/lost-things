@@ -135,6 +135,7 @@ const Chatapp = (props) => {
   const [messages, setMessages] = useState(null);
   const [textAriaMessage, setTextAriaMessage] = useState("");
   const [noConversation, setnoConversation] = useState(false);
+  const [receiverId, setReceiverId] = useState(null);
   const ENDPOINT = "http://localhost:5000";
 
   const classes = useStyle();
@@ -165,6 +166,7 @@ const Chatapp = (props) => {
           }
           setChatUsers(chatUserProfiles);
           setLoadedChatInfo({ id: itemFinderId, name: res.data.name });
+          setReceiverId(itemFinderId);
           setMessages(messages.data);
           setItemFinderUser(res.data);
         } else {
@@ -182,6 +184,7 @@ const Chatapp = (props) => {
             const messages = await axios.get(
               `/auth/chat/${chatUserProfiles[0]._id}/${currentUserId}`
             );
+            setReceiverId(chatUserProfiles[0]._id);
             setChatUsers(chatUserProfiles);
             setLoadedChatInfo({
               id: chatUserProfiles[0]._id,
@@ -206,6 +209,11 @@ const Chatapp = (props) => {
     setTextAriaMessage(event.target.value);
   };
   const sendMessage = async () => {
+    // console.log(receiverId + currentUserId);
+    //socket
+    socket.emit("message", { id: receiverId + currentUserId });
+    //socket
+
     const textmessage = textAriaMessage.trim();
     const config = {
       headers: {
@@ -213,24 +221,24 @@ const Chatapp = (props) => {
       },
     };
     if (textmessage) {
-      try {
-        const body = JSON.stringify({ message: textmessage, type: "Text" });
-        const msg = await axios.post(
-          `/auth/chat/${loadedChatInfo.id}`,
-          body,
-          config
-        );
-        setMessages((msgs) => [...msgs, msg.data]);
-        setTextAriaMessage("");
-      } catch (err) {
-        console.log(err.response.data.errors[0].msg);
-      }
+      // try {
+      //   const body = JSON.stringify({ message: textmessage, type: "Text" });
+      //   const msg = await axios.post(
+      //     `/auth/chat/${loadedChatInfo.id}`,
+      //     body,
+      //     config
+      //   );
+      //   setMessages((msgs) => [...msgs, msg.data]);
+      //   setTextAriaMessage("");
+      // } catch (err) {
+      //   console.log(err.response.data.errors[0].msg);
+      // }
     }
   };
   const selecteUserChat = async (id, name) => {
     if (id !== loadedChatInfo.id) {
       const messages = await axios.get(`/auth/chat/${id}/${currentUserId}`);
-      console.log(id);
+      setReceiverId(id);
       setLoadedChatInfo({ id: id, name: name });
       setMessages(messages.data);
     }
@@ -243,12 +251,12 @@ const Chatapp = (props) => {
       console.log(data);
     });
   }, []);
-  const smsg = () => {
-    console.log("mess");
-    socket.emit("message", `Message from ${currentUserId}`);
-  };
+  // const establichConnection = () => {
+  //   console.log(receiverId);
+  //   // socket.emit("message", `Message from ${currentUserId}`);
+  // };
   return (
-    <div className={classes.appContainer} onClick={smsg}>
+    <div className={classes.appContainer}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Hidden smDown>
           {/* chat users  */}

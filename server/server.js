@@ -26,12 +26,8 @@ const io = socketio(server);
 
 //on new connection and disconnection
 io.on("connection", (socket) => {
-  //   console.log("New User", socket.id);
   socket.on("message", (data) => {
-    // socket.emit("message", data);
-    // console.log(socket.id);
-    io.to(socket.id).emit("message", `I am a message just for ${socket.id}`);
-    // socket.broadcast.emit("message", data);
+    socket.join(data.id);
   });
 });
 
