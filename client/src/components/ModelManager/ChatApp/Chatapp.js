@@ -184,6 +184,7 @@ const Chatapp = (props) => {
             const messages = await axios.get(
               `/auth/chat/${chatUserProfiles[0]._id}/${currentUserId}`
             );
+
             setReceiverId(chatUserProfiles[0]._id);
             setChatUsers(chatUserProfiles);
             setLoadedChatInfo({
@@ -210,9 +211,6 @@ const Chatapp = (props) => {
   };
   const sendMessage = async () => {
     // console.log(receiverId + currentUserId);
-    //socket
-    socket.emit("message", { id: receiverId + currentUserId });
-    //socket
 
     const textmessage = textAriaMessage.trim();
     const config = {
@@ -245,18 +243,17 @@ const Chatapp = (props) => {
   };
   useEffect(() => {
     socket = io.connect(ENDPOINT);
-    socket.on("message", (data) => {
-      console.log("My Id is", currentUserId);
-
-      console.log(data);
-    });
+    socket.emit("login", { id: currentUserId });
   }, []);
-  // const establichConnection = () => {
-  //   console.log(receiverId);
-  //   // socket.emit("message", `Message from ${currentUserId}`);
-  // };
+  const establichConnection = () => {
+    // console.log(receiverId);
+    socket.emit("private", `I am a mesaage`);
+    socket.on("mesaage", (data) => {
+      console.log("Iamdata", data);
+    });
+  };
   return (
-    <div className={classes.appContainer}>
+    <div className={classes.appContainer} onClick={establichConnection}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Hidden smDown>
           {/* chat users  */}

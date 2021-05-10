@@ -25,11 +25,25 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 //on new connection and disconnection
+let clientSocketIds = [];
+let connectedUsers = [];
+
 io.on("connection", (socket) => {
-  socket.on("message", (data) => {
-    socket.join(data.id);
+  console.log("Connection");
+
+  socket.on("login", (user) => {
+    // connectedUsers.push({ userId: user.id, socket });
+    console.log("Anjum");
+    socket.broadcast.to(socket.id).emit("mesaage", "I am p msg");
   });
+
+  // socket.on("private", (data) => {
+  //   console.log("data", data);
+  //   socket.broadcast.to(connectedUsers[1].id).emit("mesaage", "I am p msg");
+  // });
 });
+
+//on new connection and disconnection
 
 const PORT = process.env.PORT || 5000;
 
