@@ -25,22 +25,27 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 //on new connection and disconnection
-let clientSocketIds = [];
-let connectedUsers = [];
+let clientsWithSockets = [];
+let onlineUsers = [];
 
 io.on("connection", (socket) => {
-  console.log("Connection");
-
+  // console.log("Connection");
   socket.on("login", (user) => {
-    // connectedUsers.push({ userId: user.id, socket });
-    console.log("Anjum");
-    socket.broadcast.to(socket.id).emit("mesaage", "I am p msg");
+    clientsWithSockets.push({ userId: user.userId, socket });
+    onlineUsers.push(user.userId);
   });
 
-  // socket.on("private", (data) => {
-  //   console.log("data", data);
-  //   socket.broadcast.to(connectedUsers[1].id).emit("mesaage", "I am p msg");
-  // });
+  //send message
+  socket.on("private", (data) => {
+    // console.log("sendmsg", onlineUsers);
+    // console.log("sockets", clientsWithSockets);
+    if (onlineUsers.indexOf(data.receiver) !== -1) {
+      const socket = clientsWithSockets.find(
+        (ids) => ids.userId === data.receiver
+      );
+      io.to(socket.socket.id).emit("message", "i am just for one");
+    }
+  });
 });
 
 //on new connection and disconnection

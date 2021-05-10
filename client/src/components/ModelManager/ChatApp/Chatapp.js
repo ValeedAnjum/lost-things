@@ -219,6 +219,10 @@ const Chatapp = (props) => {
       },
     };
     if (textmessage) {
+      socket.emit("private", {
+        receiver: loadedChatInfo.id,
+        msg: "I am pure hahaha",
+      });
       // try {
       //   const body = JSON.stringify({ message: textmessage, type: "Text" });
       //   const msg = await axios.post(
@@ -243,17 +247,20 @@ const Chatapp = (props) => {
   };
   useEffect(() => {
     socket = io.connect(ENDPOINT);
-    socket.emit("login", { id: currentUserId });
+    socket.emit("login", { userId: currentUserId });
+    console.log(currentUserId);
+    socket.on("message", (data) => {
+      console.log("ppp", data);
+    });
   }, []);
   const establichConnection = () => {
     // console.log(receiverId);
-    socket.emit("private", `I am a mesaage`);
-    socket.on("mesaage", (data) => {
-      console.log("Iamdata", data);
-    });
+    // socket.on("message", (data) => {
+    //   console.log("Iamdata", data);
+    // });
   };
   return (
-    <div className={classes.appContainer} onClick={establichConnection}>
+    <div className={classes.appContainer}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Hidden smDown>
           {/* chat users  */}
