@@ -172,6 +172,18 @@ const Chatapp = (props) => {
           setReceiverId(itemFinderId);
           setMessages(messages.data);
           setItemFinderUser(res.data);
+          //socket
+          socket = io.connect(ENDPOINT);
+          socket.emit("login", { userId: currentUserId });
+          // console.log(currentUserId);
+          socket.on("message", (data) => {
+            console.log("ppp", data);
+            console.log(itemFinderId);
+          });
+          return () => {
+            socket.emit("off", { userId: currentUserId });
+          };
+          //scoket
         } else {
           const chatUsersIds = await axios.get("/auth/chatusers");
           if (chatUsersIds.data.length > 0) {
@@ -195,6 +207,18 @@ const Chatapp = (props) => {
               name: chatUserProfiles[0].name,
             });
             setMessages(messages.data);
+            //socket
+            socket = io.connect(ENDPOINT);
+            socket.emit("login", { userId: currentUserId });
+            // console.log(currentUserId);
+            socket.on("message", (data) => {
+              console.log("ppp", data);
+              console.log(chatUserProfiles[0]._id);
+            });
+            return () => {
+              socket.emit("off", { userId: currentUserId });
+            };
+            //scoket
           } else {
             setnoConversation(true);
           }
@@ -250,18 +274,16 @@ const Chatapp = (props) => {
     }
   };
   useEffect(() => {
-    socket = io.connect(ENDPOINT);
-    socket.emit("login", { userId: currentUserId });
-    console.log(currentUserId);
-    socket.on("message", (data) => {
-      console.log("ppp", data.sender);
-      console.log(loadedChatInfo.id);
-      if (loadedChatInfo.id == data.sender) {
-        console.log("Ok");
-      } else {
-        console.log("Not Ok");
-      }
-    });
+    // socket = io.connect(ENDPOINT);
+    // socket.emit("login", { userId: currentUserId });
+    // // console.log(currentUserId);
+    // socket.on("message", (data) => {
+    //   console.log("ppp", data);
+    //   console.log(loadedChatInfo.id);
+    // });
+    // return () => {
+    //   socket.emit("off", { userId: currentUserId });
+    // };
   }, []);
   const establichConnection = () => {
     // console.log(receiverId);

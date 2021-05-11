@@ -30,6 +30,13 @@ let onlineUsers = [];
 
 io.on("connection", (socket) => {
   // console.log("Connection");
+  socket.on("off", (data) => {
+    onlineUsers.splice(onlineUsers.indexOf(data.userId));
+    clientsWithSockets = clientsWithSockets.filter(
+      (ids) => ids.userId !== data.userId
+    );
+  });
+
   socket.on("login", (user) => {
     clientsWithSockets.push({ userId: user.userId, socket });
     onlineUsers.push(user.userId);
@@ -38,6 +45,7 @@ io.on("connection", (socket) => {
   //send message
   socket.on("private", (data) => {
     const { receiver, msg, sender } = data;
+    console.log(onlineUsers);
     if (onlineUsers.indexOf(receiver) !== -1) {
       const socket = clientsWithSockets.find((ids) => ids.userId === receiver);
       io.to(socket.socket.id).emit("message", { msg, sender });
