@@ -37,13 +37,10 @@ io.on("connection", (socket) => {
 
   //send message
   socket.on("private", (data) => {
-    // console.log("sendmsg", onlineUsers);
-    // console.log("sockets", clientsWithSockets);
-    if (onlineUsers.indexOf(data.receiver) !== -1) {
-      const socket = clientsWithSockets.find(
-        (ids) => ids.userId === data.receiver
-      );
-      io.to(socket.socket.id).emit("message", "i am just for one");
+    const { receiver, msg, sender } = data;
+    if (onlineUsers.indexOf(receiver) !== -1) {
+      const socket = clientsWithSockets.find((ids) => ids.userId === receiver);
+      io.to(socket.socket.id).emit("message", { msg, sender });
     }
   });
 });

@@ -131,7 +131,10 @@ const useStyle = makeStyles((theme) => {
 const Chatapp = (props) => {
   const [itemFinderUser, setItemFinderUser] = useState(null);
   const [chatUsers, setChatUsers] = useState([]);
-  const [loadedChatInfo, setLoadedChatInfo] = useState(null);
+  const [loadedChatInfo, setLoadedChatInfo] = useState({
+    id: null,
+    name: null,
+  });
   const [messages, setMessages] = useState(null);
   const [textAriaMessage, setTextAriaMessage] = useState("");
   const [noConversation, setnoConversation] = useState(false);
@@ -221,7 +224,8 @@ const Chatapp = (props) => {
     if (textmessage) {
       socket.emit("private", {
         receiver: loadedChatInfo.id,
-        msg: "I am pure hahaha",
+        msg: textmessage,
+        sender: currentUserId,
       });
       // try {
       //   const body = JSON.stringify({ message: textmessage, type: "Text" });
@@ -250,7 +254,13 @@ const Chatapp = (props) => {
     socket.emit("login", { userId: currentUserId });
     console.log(currentUserId);
     socket.on("message", (data) => {
-      console.log("ppp", data);
+      console.log("ppp", data.sender);
+      console.log(loadedChatInfo.id);
+      if (loadedChatInfo.id == data.sender) {
+        console.log("Ok");
+      } else {
+        console.log("Not Ok");
+      }
     });
   }, []);
   const establichConnection = () => {
