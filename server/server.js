@@ -35,17 +35,19 @@ io.on("connection", (socket) => {
     clientsWithSockets = clientsWithSockets.filter(
       (ids) => ids.userId !== data.userId
     );
+    console.log("off", onlineUsers);
   });
 
   socket.on("login", (user) => {
     clientsWithSockets.push({ userId: user.userId, socket });
     onlineUsers.push(user.userId);
+    console.log("login", onlineUsers);
   });
 
   //send message
   socket.on("private", (data) => {
     const { receiver, msg, sender } = data;
-    console.log(onlineUsers);
+    // console.log(onlineUsers);
     if (onlineUsers.indexOf(receiver) !== -1) {
       const socket = clientsWithSockets.find((ids) => ids.userId === receiver);
       io.to(socket.socket.id).emit("message", { msg, sender });
