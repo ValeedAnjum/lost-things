@@ -58,13 +58,15 @@ io.on("connection", (socket) => {
 
   //send private message
   socket.on("private", (data) => {
-    const { receiver, msg, sender } = data;
-    // console.log(onlineUsers);
+    const { receiverId } = data;
+    // console.log(receiverId);
     if (
-      connectedUsers.some((ids) => Object.values(ids).indexOf(receiver) !== -1)
+      connectedUsers.some(
+        (ids) => Object.values(ids).indexOf(receiverId) !== -1
+      )
     ) {
-      const socket = clientSocketIds.find((ids) => ids.userId === receiver);
-      io.to(socket.socket.id).emit("message", { msg, sender });
+      const socket = clientSocketIds.find((ids) => ids.userId === receiverId);
+      io.to(socket.socket.id).emit("message", data);
     }
   });
 });

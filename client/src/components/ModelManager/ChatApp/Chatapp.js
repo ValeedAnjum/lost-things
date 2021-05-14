@@ -214,8 +214,6 @@ const Chatapp = (props) => {
     setTextAriaMessage(event.target.value);
   };
   const sendMessage = async () => {
-    // console.log(receiverId + currentUserId);
-
     const textmessage = textAriaMessage.trim();
     const config = {
       headers: {
@@ -223,23 +221,20 @@ const Chatapp = (props) => {
       },
     };
     if (textmessage) {
-      socket.emit("private", {
-        receiver: loadedChatInfo.id,
-        msg: textmessage,
-        sender: currentUserId,
-      });
-      // try {
-      //   const body = JSON.stringify({ message: textmessage, type: "Text" });
-      //   const msg = await axios.post(
-      //     `/auth/chat/${loadedChatInfo.id}`,
-      //     body,
-      //     config
-      //   );
-      //   setMessages((msgs) => [...msgs, msg.data]);
-      //   setTextAriaMessage("");
-      // } catch (err) {
-      //   console.log(err.response.data.errors[0].msg);
-      // }
+      try {
+        const body = JSON.stringify({ message: textmessage, type: "Text" });
+        const msg = await axios.post(
+          `/auth/chat/${loadedChatInfo.id}`,
+          body,
+          config
+        );
+        setMessages((msgs) => [...msgs, msg.data]);
+        console.log(msg.data);
+        socket.emit("private", msg.data);
+        setTextAriaMessage("");
+      } catch (err) {
+        console.log(err.response.data.errors[0].msg);
+      }
     }
   };
   const selecteUserChat = async (id, name) => {
@@ -253,11 +248,6 @@ const Chatapp = (props) => {
   useEffect(() => {
     socket = io.connect(ENDPOINT);
     socket.emit("login", { userId: currentUserId });
-
-    // socket.on("message", (data) => {
-    //   console.log("Iamdata", data);
-    // });
-    // console.log(socket);
     return () => {
       socket.emit("off", { userId: currentUserId });
     };
@@ -342,7 +332,7 @@ const Chatapp = (props) => {
           </Grid>
           {/* user info and delete chat button  */}
           {/* messages conatiner  */}
-          <Grid className={classes.messagesArea}>
+          <Grid className={classes.messagesArea} id="messagesArea">
             {/* user message  */}
             {messages ? (
               <Messages messages={messages} classes={classes} socket={socket} />
