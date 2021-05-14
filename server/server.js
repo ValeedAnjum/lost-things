@@ -25,38 +25,45 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 //on new connection and disconnection
-let clientsWithSockets = [];
-let onlineUsers = [];
+let clientSocketIds = [];
+let connectedUsers = [];
 
 io.on("connection", (socket) => {
   // console.log("Connection");
   //when the user closes chat application
   socket.on("off", (data) => {
-    onlineUsers.splice(onlineUsers.indexOf(data.userId));
-    clientsWithSockets = clientsWithSockets.filter(
+    connectedUsers = connectedUsers.filter(
+      (user) => user.userId !== data.userId
+    );
+    clientSocketIds = clientSocketIds.filter(
       (ids) => ids.userId !== data.userId
     );
-    console.log("off", onlineUsers);
   });
   //when the get disconnetc
   socket.on("disconnect", () => {
-    console.log("disconnected", socket.id);
+    connectedUsers = connectedUsers.filter(
+      (user) => user.socketId !== socket.id
+    );
+    clientSocketIds = clientSocketIds.filter(
+      (ele) => ele.socket.id !== socket.id
+    );
   });
 
   //when the user opens chat application
   socket.on("login", (user) => {
-    clientsWithSockets.push({ userId: user.userId, socket });
-    onlineUsers.push(user.userId);
-    console.log("sid", socket.id);
-    console.log("login", onlineUsers);
+    clientSocketIds.push({ userId: user.userId, socket });
+    connectedUsers.push({ userId: user.userId, socketId: socket.id });
+    // console.log("login", connectedUsers);
   });
 
   //send private message
   socket.on("private", (data) => {
     const { receiver, msg, sender } = data;
     // console.log(onlineUsers);
-    if (onlineUsers.indexOf(receiver) !== -1) {
-      const socket = clientsWithSockets.find((ids) => ids.userId === receiver);
+    if (
+      connectedUsers.some((ids) => Object.values(ids).indexOf(receiver) !== -1)
+    ) {
+      const socket = clientSocketIds.find((ids) => ids.userId === receiver);
       io.to(socket.socket.id).emit("message", { msg, sender });
     }
   });
