@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Message from "./Message";
 import axios from "axios";
+import Messages from "./Messages";
 
 let socket;
 const useStyle = makeStyles((theme) => {
@@ -253,9 +254,10 @@ const Chatapp = (props) => {
     socket = io.connect(ENDPOINT);
     socket.emit("login", { userId: currentUserId });
 
-    socket.on("message", (data) => {
-      console.log("Iamdata", data);
-    });
+    // socket.on("message", (data) => {
+    //   console.log("Iamdata", data);
+    // });
+    // console.log(socket);
     return () => {
       socket.emit("off", { userId: currentUserId });
     };
@@ -343,9 +345,7 @@ const Chatapp = (props) => {
           <Grid className={classes.messagesArea}>
             {/* user message  */}
             {messages ? (
-              messages.map((msg) => {
-                return <Message msg={msg} classes={classes} key={msg._id} />;
-              })
+              <Messages messages={messages} classes={classes} socket={socket} />
             ) : !noConversation ? (
               "Loading..."
             ) : (

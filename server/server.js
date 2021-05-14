@@ -30,6 +30,7 @@ let onlineUsers = [];
 
 io.on("connection", (socket) => {
   // console.log("Connection");
+  //when the user closes chat application
   socket.on("off", (data) => {
     onlineUsers.splice(onlineUsers.indexOf(data.userId));
     clientsWithSockets = clientsWithSockets.filter(
@@ -37,14 +38,20 @@ io.on("connection", (socket) => {
     );
     console.log("off", onlineUsers);
   });
+  //when the get disconnetc
+  socket.on("disconnect", () => {
+    console.log("disconnected", socket.id);
+  });
 
+  //when the user opens chat application
   socket.on("login", (user) => {
     clientsWithSockets.push({ userId: user.userId, socket });
     onlineUsers.push(user.userId);
+    console.log("sid", socket.id);
     console.log("login", onlineUsers);
   });
 
-  //send message
+  //send private message
   socket.on("private", (data) => {
     const { receiver, msg, sender } = data;
     // console.log(onlineUsers);
