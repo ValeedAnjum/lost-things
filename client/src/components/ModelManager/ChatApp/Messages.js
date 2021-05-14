@@ -12,10 +12,17 @@ const Messages = ({ messages, classes, socket }) => {
       left: 0,
       behavior: "smooth",
     });
+
     socket.on("message", (data) => {
       setLocalMessages((msgs) => [...msgs, data]);
+      msgArea.scrollTo({
+        top: scrollHeight,
+        left: 0,
+        behavior: "smooth",
+      });
     });
   }, []);
+
   return (
     <>
       {localMessages.map((msg, index) => (
