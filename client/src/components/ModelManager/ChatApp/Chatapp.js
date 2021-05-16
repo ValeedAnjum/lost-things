@@ -229,7 +229,18 @@ const Chatapp = (props) => {
           config
         );
         setMessages((msgs) => [...msgs, msg.data]);
-        console.log(msg.data);
+        //changing scrollbar position
+        let msgArea = document.getElementById("messagesArea");
+        let scrollHeight = msgArea.scrollHeight;
+        // msgArea.scrollTo(0, scrollHeight);
+        msgArea.scrollTo({
+          top: scrollHeight,
+          left: 0,
+          behavior: "smooth",
+        });
+
+        //changing scollbar position
+        // console.log(msg.data);
         socket.emit("private", msg.data);
         setTextAriaMessage("");
       } catch (err) {
@@ -335,7 +346,12 @@ const Chatapp = (props) => {
           <Grid className={classes.messagesArea} id="messagesArea">
             {/* user message  */}
             {messages ? (
-              <Messages messages={messages} classes={classes} socket={socket} />
+              <Messages
+                messages={messages}
+                classes={classes}
+                setMessages={setMessages}
+                socket={socket}
+              />
             ) : !noConversation ? (
               "Loading..."
             ) : (
