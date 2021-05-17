@@ -2,6 +2,8 @@ import { Avatar, Grid } from "@material-ui/core";
 import React from "react";
 import { Fragment } from "react";
 import { connect } from "react-redux";
+import MediaMessage from "./MediaMessage";
+import SimpletextMessage from "./SimpletextMessage";
 
 const Message = ({ classes, msg, currentUserId }) => {
   // console.log(msg);
@@ -10,11 +12,35 @@ const Message = ({ classes, msg, currentUserId }) => {
   return (
     <Fragment>
       {!isSenderMessage ? (
-        <Fragment>
-          <Grid item container className={classes.userMessageContainer}>
-            <Grid item>
-              <p className={classes.userMessage}>{msg.message}</p>
+        msg.type == "Text" ? (
+          <Fragment>
+            <Grid item container className={classes.userMessageContainer}>
+              <Grid item>
+                <p className={classes.userMessage}>{msg.message}</p>
+              </Grid>
             </Grid>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Grid item container className={classes.userMessageContainer}>
+              <Grid item>
+                <img
+                  src={msg.message}
+                  style={{ width: "300px", height: "300px" }}
+                />
+              </Grid>
+            </Grid>
+          </Fragment>
+        )
+      ) : msg.type == "Text" ? (
+        <Fragment>
+          <Grid
+            item
+            container
+            justify="flex-end"
+            className={classes.currentUserMessageContainer}
+          >
+            <p className={classes.currentUserMessage}>{msg.message}</p>
           </Grid>
         </Fragment>
       ) : (
@@ -25,7 +51,10 @@ const Message = ({ classes, msg, currentUserId }) => {
             justify="flex-end"
             className={classes.currentUserMessageContainer}
           >
-            <p className={classes.currentUserMessage}>{msg.message}</p>
+            <img
+              src={msg.message}
+              style={{ width: "300px", height: "300px" }}
+            />
           </Grid>
         </Fragment>
       )}
