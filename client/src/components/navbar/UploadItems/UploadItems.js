@@ -109,7 +109,6 @@ const UploadItems = (props) => {
     const CopyVal = { ...val, date: selectedDate, coordinates, file, address };
     delete CopyVal.detail;
 
-    console.log(CopyVal);
     // upload_image(CopyVal);
     item_upload(CopyVal);
     setopenDrawerUpload();

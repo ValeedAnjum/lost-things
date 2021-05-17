@@ -10,12 +10,12 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import Resizer from "react-image-file-resizer";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import ClearIcon from "@material-ui/icons/Clear";
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
-import Message from "./Message";
 import axios from "axios";
 import Messages from "./Messages";
 
@@ -139,6 +139,8 @@ const Chatapp = (props) => {
   const [messages, setMessages] = useState(null);
   const [textAriaMessage, setTextAriaMessage] = useState("");
   const [noConversation, setnoConversation] = useState(false);
+  const [file, setfile] = useState(null);
+
   const [receiverId, setReceiverId] = useState(null);
   const ENDPOINT = "http://localhost:5000";
 
@@ -150,8 +152,6 @@ const Chatapp = (props) => {
     if (itemFinderId) {
       const textArea = document.getElementById("textArea");
       textArea.focus();
-      // console.log("IF_ID", itemFinderId);
-      // console.log("CU_ID", currentUserId);
       (async function () {
         if (itemFinderId !== "messenger") {
           const res = await axios.get(`/auth/userinfo/${itemFinderId}`);
@@ -208,6 +208,9 @@ const Chatapp = (props) => {
   }, []);
   const textareaMessageHandler = (event) => {
     const newValue = event.target.value;
+    if (newValue.length >= 500) {
+      return alert("maximum characters length exceeded ");
+    }
     if (newValue.charCodeAt(newValue.length - 1) === 10) {
       return sendMessage();
     }
@@ -263,8 +266,76 @@ const Chatapp = (props) => {
       socket.emit("off", { userId: currentUserId });
     };
   }, []);
-  const establichConnection = () => {
-    // console.log(receiverId);
+  const fileChangeHandler = (event) => {
+    let fileInput = false;
+    if (event.target.files[0]) {
+      fileInput = true;
+    }
+    console.log(fileInput);
+    if (fileInput) {
+      Resizer.imageFileResizer(
+        event.target.files[0],
+        500,
+        300,
+        "JPEG",
+        100,
+        0,
+        async (file) => {
+          const configMultiFormData = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+          try {
+            const formData = new FormData();
+            formData.append("file", file);
+            const imageRes = await axios.post(
+              "/item/upload",
+              formData,
+              configMultiFormData
+            );
+            console.log(imageRes.data);
+            const body = JSON.stringify({
+              message: imageRes.data,
+              type: "Picture",
+            });
+            const msg = await axios.post(
+              `/auth/chat/${loadedChatInfo.id}`,
+              body,
+              config
+            );
+            setMessages((msgs) => [...msgs, msg.data]);
+            //changing scrollbar position
+            let msgArea = document.getElementById("messagesArea");
+            let scrollHeight = msgArea.scrollHeight;
+            // msgArea.scrollTo(0, scrollHeight);
+            msgArea.scrollTo({
+              top: scrollHeight,
+              left: 0,
+              behavior: "smooth",
+            });
+
+            //changing scollbar position
+            // console.log(msg.data);
+            socket.emit("private", msg.data);
+            setTextAriaMessage("");
+          } catch (err) {
+            console.log(err.response.data.errors);
+          }
+        },
+        "file",
+        500,
+        300
+      );
+    }
+  };
+  const selectFile = () => {
+    document.getElementById("select-image").click();
   };
   return (
     <div className={classes.appContainer}>
@@ -373,9 +444,18 @@ const Chatapp = (props) => {
               className={classes.messageTypingInnerArea}
             >
               <Grid item container justify="center" xs={1}>
-                <IconButton>
+                {/* select file  */}
+                <IconButton onClick={selectFile}>
                   <AttachFileIcon />
                 </IconButton>
+                <input
+                  type="file"
+                  onChange={fileChangeHandler}
+                  accept="image/*"
+                  id="select-image"
+                  style={{ display: "none" }}
+                />
+                {/* select file  */}
               </Grid>
               <Grid item xs={10}>
                 <textarea

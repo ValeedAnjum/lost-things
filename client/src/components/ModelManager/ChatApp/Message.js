@@ -2,12 +2,8 @@ import { Avatar, Grid } from "@material-ui/core";
 import React from "react";
 import { Fragment } from "react";
 import { connect } from "react-redux";
-import MediaMessage from "./MediaMessage";
-import SimpletextMessage from "./SimpletextMessage";
 
 const Message = ({ classes, msg, currentUserId }) => {
-  // console.log(msg);
-  // console.log(currentUserId);
   const isSenderMessage = currentUserId === msg.senderId;
   return (
     <Fragment>
