@@ -113,6 +113,31 @@ router.get("/getitemdetails/:id", async (req, res) => {
     return res.status(500).send("Server Error");
   }
 });
+// @route    get item/saveditems
+// @desc     get all items uploaded by authenicated user
+// @access   Private
+router.get("/saveditems", auth, async (req, res) => {
+  try {
+    const items = await Item.find({ finderId: req.user.id });
+    return res.json(items);
+  } catch (err) {
+    return res.status(500).send("Server Error");
+  }
+});
+
+// @route    POST item/deleteitem/:id
+// @desc     delete item bu document id
+// @access   Private
+router.post("/deleteitem/:id", auth, async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const deleteResponse = await Item.findByIdAndRemove(req.params.id);
+    return res.json({ removed: true });
+  } catch (err) {
+    return res.status(500).send("Server Error");
+  }
+});
+
 // @route    POST item/file_upload
 // @desc     Uploading a file it is a temp route
 // @access   Public

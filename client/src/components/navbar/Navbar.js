@@ -19,6 +19,7 @@ import Register from "./Register/Register";
 import Signin from "./Signin/Signin";
 import Searchbar from "./Searchbar/Searchbar";
 import UploadItems from "./UploadItems/UploadItems";
+import SavedItems from "./SavedItems/SavedItems";
 const useStyles = makeStyles((theme) => ({
   appbar: {
     backgroundColor: "transparent",
@@ -56,6 +57,7 @@ const Navbar = (props) => {
   const [openDrawerRegister, setopenDrawerRegister] = useState(false);
   const [openDrawerUpload, setopenDrawerUpload] = useState(false);
   const [mobileMenu, setmobileMenu] = useState(false);
+  const [savedItem, setsavedItem] = useState(false);
   const { auth, logout, openChatAppModel } = props;
   const { history } = props;
   const classes = useStyles();
@@ -98,6 +100,15 @@ const Navbar = (props) => {
                   </Fragment>
                 ) : (
                   <Fragment>
+                    <ListItem
+                      button
+                      onClick={() => {
+                        setsavedItem(true);
+                        setmobileMenu(false);
+                      }}
+                    >
+                      <ListItemText primary={"SAVED ITEMS"} />
+                    </ListItem>
                     <ListItem button onClick={openMessenger}>
                       <ListItemText primary={"MESSENGER"} />
                     </ListItem>
@@ -149,6 +160,9 @@ const Navbar = (props) => {
               </Fragment>
             ) : (
               <Fragment>
+                <Button color="inherit" onClick={() => setsavedItem(true)}>
+                  Saved Items
+                </Button>
                 <Button color="inherit" onClick={openMessenger}>
                   Messenger
                 </Button>
@@ -196,6 +210,12 @@ const Navbar = (props) => {
       <Drawer variant="temporary" anchor="top" open={openDrawerUpload}>
         <div style={{ height: "100vh" }}>
           <UploadItems setopenDrawerUpload={() => setopenDrawerUpload(false)} />
+        </div>
+      </Drawer>
+      {/* saved items drawers  */}
+      <Drawer variant="temporary" anchor="top" open={savedItem}>
+        <div style={{ height: "100vh" }}>
+          <SavedItems setsavedItem={() => setsavedItem(false)} />
         </div>
       </Drawer>
     </Fragment>
