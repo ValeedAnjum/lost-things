@@ -13,8 +13,18 @@ class Items extends Component {
   };
   async componentDidMount() {
     await this.props.FetchItems();
+    window.addEventListener("scroll", this.lazyLoader);
   }
+  lazyLoader = async () => {
+    const scroolIsAtBottom =
+      document.documentElement.scrollHeight - window.innerHeight <=
+      window.scrollY;
+    if (this.props.moreItems && scroolIsAtBottom) {
+      this.fetchNextItems();
+    }
+  };
   componentWillUnmount() {
+    window.removeEventListener("scroll", this.lazyLoader);
     return this.props.CleanUp();
   }
   componentDidUpdate(prePro) {
@@ -52,18 +62,12 @@ class Items extends Component {
                 />
               );
             })}
-            {this.state.items.length === 0 && <h1>No items</h1>}
           </Grid>
+          {this.props.loading && this.state.items.length !== 0 ? (
+            <h3>Loading...</h3>
+          ) : null}
+          {this.props.moreItems ? null : <h3>nothing more to explore</h3>}
         </Grid>
-        {this.props.moreItems && (
-          <Button
-            onClick={this.fetchNextItems}
-            variant="contained"
-            color="primary"
-          >
-            Next
-          </Button>
-        )}
       </Fragment>
     );
   }

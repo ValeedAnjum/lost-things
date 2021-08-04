@@ -6,7 +6,6 @@ const SingleItem = ({
   item: { img, name, address, details, _id },
   deleteItem,
 }) => {
-  console.log(details);
   return (
     <Fragment>
       <Grid item sm={6}>

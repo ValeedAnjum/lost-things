@@ -2,9 +2,17 @@ import { Avatar, Grid } from "@material-ui/core";
 import React from "react";
 import { Fragment } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
-const Message = ({ classes, msg, currentUserId }) => {
+const Message = (props) => {
+  const { classes, msg, currentUserId } = props;
+  // console.log(props.location.pathname.includes("/details/"));
   const isSenderMessage = currentUserId === msg.senderId;
+  console.log(msg.type);
+  if (props.location.pathname.includes("/details/") && msg.type != "Text") {
+    msg.message = `http://localhost:5000/${msg.message}`;
+  }
   return (
     <Fragment>
       {!isSenderMessage ? (
@@ -64,4 +72,4 @@ const mapState = (state) => {
   };
 };
 
-export default connect(mapState, null)(Message);
+export default compose(connect(mapState, null))(withRouter(Message));

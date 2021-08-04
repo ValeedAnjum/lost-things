@@ -13,7 +13,10 @@ router.post(
   "/signin",
   [
     check("email", "Please enter a valid email address").isEmail(),
-    check("password", "Please enter password").not().isEmpty(),
+    check("password", "Please enter password")
+      .not()
+      .isEmpty()
+      .isLength({ min: 8 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -57,9 +60,12 @@ router.post(
 router.post(
   "/register",
   [
-    check("name", "Name is required").not().isEmpty(),
+    check("name", "Name is required").not().isEmpty().isLength({ min: 8 }),
     check("email", "Enter a valid email address").isEmail(),
-    check("password", "Password is required").not().isEmpty(),
+    check("password", "Enter a Password with minimum 8 characters")
+      .not()
+      .isEmpty()
+      .isLength({ min: 8 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);

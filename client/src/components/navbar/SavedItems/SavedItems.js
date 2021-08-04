@@ -18,6 +18,14 @@ const useStyles = makeStyles((theme) => {
       backgroundColor: theme.palette.secondary.main,
       cursor: "pointer",
     },
+    itemContainer: {
+      border: "1px solid #46373754",
+      margin: "5px",
+      borderRadius: "3px",
+      "&:hover": {
+        border: "1px solid #00000069",
+      },
+    },
   };
 });
 const SavedItems = (props) => {
@@ -57,7 +65,13 @@ const SavedItems = (props) => {
           items.length > 0 &&
           items.map((item) => {
             return (
-              <SingleItem deleteItem={deleteItem} key={item._id} item={item} />
+              <Grid container className={classes.itemContainer}>
+                <SingleItem
+                  deleteItem={deleteItem}
+                  key={item._id}
+                  item={item}
+                />
+              </Grid>
             );
           })}
       </Grid>

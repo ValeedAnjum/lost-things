@@ -57,12 +57,12 @@ export const uploadItem = (item) => async (dispatch) => {
 export const fetchItems = (id, cords) => async (dispatch, getState) => {
   try {
     dispatch({ type: "FETCH_ITEMS_START" });
-    dispatch({ type: "AsynchronousStart" });
+    // dispatch({ type: "AsynchronousStart" });
     const res = id
       ? await axios.get(`/item/get-items/4/${id}`)
       : await axios.get("/item/get-items/4");
     dispatch({ type: "FETCH_ITEM_SUCCESS", payload: res.data });
-    dispatch({ type: "AsynchronousSuccess" });
+    // dispatch({ type: "AsynchronousSuccess" });
     return res.data;
   } catch (err) {
     console.log(err.response.data.errors);

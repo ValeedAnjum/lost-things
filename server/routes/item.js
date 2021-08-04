@@ -80,6 +80,8 @@ router.get("/getitem/:num/:lat/:lng", async (req, res) => {
     [Math.floor(lat), Math.floor(lat) + 2],
     [Math.floor(lng), Math.floor(lng) + 2],
   ];
+  // console.log("latitude", lat, "longitude", lng);
+  // console.log("lR", latRange, "lngR", lngRange);
   try {
     const items = id
       ? await Item.find({
