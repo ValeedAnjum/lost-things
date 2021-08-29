@@ -9,8 +9,8 @@ var storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: function (req, file, cb) {
-    // cb(null, Date.now() + "-" + file.originalname);
-    cb(null, file.originalname);
+    cb(null, Date.now() + "-" + file.originalname);
+    // cb(null, Date.now());
   },
 });
 
@@ -81,7 +81,7 @@ router.get("/getitem/:num/:lat/:lng", async (req, res) => {
     [Math.floor(lng), Math.floor(lng) + 2],
   ];
   // console.log("latitude", lat, "longitude", lng);
-  // console.log("lR", latRange, "lngR", lngRange);
+  console.log("lR", latRange, "lngR", lngRange);
   try {
     const items = id
       ? await Item.find({

@@ -126,6 +126,7 @@ const UploadItems = (props) => {
     let fileInput = false;
     // event.target.files[0] && upload_image(event.target.files[0]);
     // setfile(event.target.files[0]) &&
+    // console.log(event.target.files[0]);
     if (event.target.files[0]) {
       fileInput = true;
     }

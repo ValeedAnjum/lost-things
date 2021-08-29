@@ -12,7 +12,7 @@ app.use(express.static("uploads"));
 app.use(express.json({ extended: false, limit: "10mb" }));
 app.use(cors());
 //checking
-app.get("/", (req, res) => res.send("API IS UP"));
+app.get("/", (req, res) => res.send("FYP API IS UP"));
 
 //defining routes
 app.use("/auth", require("./routes/auth"));
